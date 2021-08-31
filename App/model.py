@@ -25,21 +25,49 @@
  """
 
 
+from DISClib.DataStructures.arraylist import newList
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
 
 """
-Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
-los mismos.
+Se define la estructura de un catálogo de obras en el museo. 
+El catálogo tendrá dos listas, una para los obras del museo, 
+otra para los artistas.
 """
 
 # Construccion de modelos
 
+def newCatalog():
+    """
+    Inicializa el catálogo de obras. Crea una lista vacia para guardar
+    todos las obras, adicionalmente, crea una lista vacia para los artistas.
+    Retorna el catalogo inicializado.
+    """
+    catalog = {"artworks": None,
+                "artists": None}
+
+    catalog["artworks"] = lt.newList()
+    catalog["artists"] = lt.newList("ARRAY_LIST")
+    return catalog
+
 # Funciones para agregar informacion al catalogo
 
+def addArtwork(catalog, artwork):
+    return lt.addLast(catalog["artworks"], artwork)
+    
 # Funciones para creacion de datos
+
+def newArtwork(artwork):
+    """
+    Crea una nueva estructura para modelar los libros de
+    un autor y su promedio de ratings
+    """
+    piece = {'titulo': "", "ID": None}
+    piece['titulo'] = artwork["Title"]
+    piece['ID'] = artwork["ConstituentID"]
+    return piece
 
 # Funciones de consulta
 

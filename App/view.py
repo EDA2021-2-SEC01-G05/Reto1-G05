@@ -22,7 +22,7 @@
 
 import config as cf
 import sys
-import controller
+import controller as c
 from DISClib.ADT import list as lt
 assert cf
 
@@ -37,7 +37,10 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Listar crónologicamente los artistas")
+    print("3- Listar crónologicamente las adquisiciones")
+    print("4- Clasificar las obras de los artistas por tecnica")
+    print("5- Clasificar las obras por la nacionalidad de sus creadores")
 
 catalog = None
 
@@ -49,7 +52,9 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-
+        catalog = c.initCatalog()
+        c.loadData(catalog)
+        print('Libros cargados: ' + str(lt.size(catalog['artworks'])))
     elif int(inputs[0]) == 2:
         pass
 
