@@ -45,6 +45,7 @@ def loadData(catalog):
     estructura de datos
     """
     loadArtworks(catalog)
+    loadArtists(catalog)
 
 def loadArtworks(catalog):
     """
@@ -57,13 +58,19 @@ def loadArtworks(catalog):
     for artwork in input_file:
         model.addArtwork(catalog, artwork)   
 
-
+def loadArtists(catalog):
+    """
+    """
+    booksfile = cf.data_dir + 'MoMA/Artists-utf8-large.csv'
+    input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
+    for artist in input_file:
+        model.addArtist(catalog, artist)
+    
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
- 
-def countBooksByTag(catalog, tag):
+def lastThree(catalog, name):
     """
-    Retorna los libros que fueron etiquetados con el tag
+    Devuelve los ultimos 3 elementos dela catalogo de artistas y obras.
     """
-    return model.countBooksByTag(catalog, tag)
+    return model.lastThreeArtist(catalog, name)

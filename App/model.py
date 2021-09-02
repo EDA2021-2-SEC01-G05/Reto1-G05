@@ -56,21 +56,26 @@ def newCatalog():
 
 def addArtwork(catalog, artwork):
     lt.addLast(catalog["artworks"], artwork)
-    
-# Funciones para creacion de datos
 
-def newArtwork(artwork):
-    """
-    Crea una nueva estructura para modelar los libros de
-    un autor y su promedio de ratings
-    """
-    piece = {'titulo': "", "ID": None}
-    piece['titulo'] = artwork["Title"]
-    piece['ID'] = artwork["ConstituentID"]
-    return piece
+def addArtist(catalog, artist):
+    lt.addLast(catalog["artists"], artist)
+
+# Funciones para creacion de dato
 
 # Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento
+
+def lastThreeArtist(catalog, name):
+    """
+    Retorna una lista con los 3 ultimos elementos del catalogo escogido.
+    """
+    last = []
+    for x in range(0,3):
+        pos = int(lt.size(catalog[name])) - x
+        i = (lt.getElement(catalog[name], pos))
+        last.append(i)
+    return last
+    
