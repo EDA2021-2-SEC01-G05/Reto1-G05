@@ -41,6 +41,7 @@ def printMenu():
     print("3- Listar crónologicamente las adquisiciones")
     print("4- Clasificar las obras de los artistas por tecnica")
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
+    print("0- Salir")
 
 def initCatalog():
     """
@@ -57,6 +58,45 @@ def loadData(catalog):
 
 catalog = None
 
+def printArtworkData(artworks):
+    size = lt.size(artworks)
+    if size:
+        for artwork in lt.iterator(artworks):
+            print ("Título: " + artwork["Title"] + " Fecha de Adquisición:  " 
+                    + artwork["DateAcquired"] + " Medio: " + artwork["Medium"] + " Dimensiones: " + artwork["Dimensions"])
+    else:
+        print ("No se encontraron obras")
+
+def printArtistData(artists):
+    size = lt.size(artists)
+    if size:
+        for artist in lt.iterator(artists):
+            print ("Nombre: " + artist["DisplayName"] + " Contituent ID:  " 
+                    + artist["ConstituentID"])
+    else:
+        print ("No se encontraron artistas")
+
+def artworksBydate(catalog, startDate, finishDate):
+    """
+    Genera una lista cronológicamente ordenada de las obras adquiridas 
+    por el museo en un rango de fecha. Retorna el total de obras en el rango cronológico, 
+    total de obras adquiridas por compra y las primeras 3 y utimas 3 obras del rango.
+    """
+    org_dates = controller.organizeBooksbyDate(catalog, startDate, finishDate)
+    last = controller.lastThree(org_dates)
+    first = controller.firstThree(org_dates)
+    print("\n")
+    print("Total de obras en el rango " + str(startDate) + " - " + str(finishDate) + ": " + str(lt.size(org_dates)))
+    print("-" * 50)
+    print("Total de obras compradas en el rango: " + str(controller.countPurchase(org_dates)))
+    print("-" * 50)
+    print ("  Estos son las 3 primeras Obras encontrados: ")
+    printArtworkData(first)
+    print("-" * 50)
+    print ("  Estos son las 3 ultimas Obras encontrados: ")
+    printArtworkData(last)
+    print("-" * 50)
+
 """
 Menu principal
 """
@@ -70,12 +110,14 @@ while True:
         print('Obras cargados: ' + str(lt.size(catalog['artworks'])))
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         print("Ultimos 3 elementos de Artistas: ")
-        print(controller.lastThree(catalog,"artists"))
+        printArtistData(controller.lastThree(catalog["artists"]))
         print("Ultimos 3 elementos de Obras: ")
-        print(controller.lastThree(catalog,"artworks"))
-
+        printArtworkData(controller.lastThree(catalog["artworks"]))
+        
     elif int(inputs[0]) == 2:
-        pass
+        startDate = input("Fecha de Inicio (YYYY-MM-DD): ")
+        finishDate = input("Fecha Final (YYYY-MM-DD): ")
+        artworksBydate(catalog, startDate, finishDate) 
 
     else:
         sys.exit(0)

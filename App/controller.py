@@ -23,7 +23,7 @@
 import config as cf
 import model
 import csv
-
+from datetime import date
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
@@ -44,14 +44,13 @@ def loadData(catalog):
     Carga los datos de los archivos y cargar los datos en la
     estructura de datos
     """
-    loadArtworks(catalog)
     loadArtists(catalog)
+    loadArtworks(catalog)
+    
 
 def loadArtworks(catalog):
     """
-    Carga las obras del archivo.  Por cada libro se toman sus artistas y por
-    cada uno de ellos, se crea en la lista de artistas, a dicho artista y una
-    referencia a la obra que se esta procesando.
+    Carga las obras del archivo.
     """
     booksfile = cf.data_dir + 'MoMA/Artworks-utf8-large.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
@@ -65,12 +64,30 @@ def loadArtists(catalog):
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for artist in input_file:
         model.addArtist(catalog, artist)
-    
+
 # Funciones de ordenamiento
 
+def organizeBooksbyDate(catalog, startDate, finishDate):
+    """
+    """
+    return model.organizeArtworkbyDate(catalog, startDate, finishDate)
+
 # Funciones de consulta sobre el catálogo
-def lastThree(catalog, name):
+
+def countPurchase(artworks):
+    """
+    """
+    return model.countPurchase(artworks)
+
+def firstThree(catalog):
+    """
+    Devuelve los primeros 3 elementos dela catalogo de artistas y obras.
+    """
+    return model.firstThree(catalog)
+
+def lastThree(catalog):
     """
     Devuelve los ultimos 3 elementos dela catalogo de artistas y obras.
     """
-    return model.lastThreeArtist(catalog, name)
+    return model.lastThree(catalog)
+
