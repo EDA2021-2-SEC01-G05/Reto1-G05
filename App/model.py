@@ -63,13 +63,10 @@ def addArtist(catalog, artist):
 
 # Funciones para creacion de dato
 
-# Funciones de consulta
-
-def getArtistbyanio(catalog, anio):
+def getArtistbyanio(artists, anio):
     """
-    Retorna un artista por su fecha de nacimiento.
+    Retorna un artista por su fecha de nacimiento, luego, lo elimina de la lista
     """
-    artists = catalog["artists"]
     pos = lt.isPresent(artists, anio)
     if pos > 0:
         artist = lt.getElement(artists, pos)
@@ -77,6 +74,8 @@ def getArtistbyanio(catalog, anio):
         return artist
     else:
         return None
+
+# Funciones de consulta
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -93,10 +92,21 @@ def compareAnio(anio, artist):
 # Funciones de ordenamiento
 
 def organizeArtistsbyanio(catalog,anio_inicial,anio_final):
+    """
+    Organiza y retorna los artistas que esten en un rango de una fecha inicial y final.
+    """
+    # crear copia de la lista artistas para iterar sobre esta y no modificar el catalogo original
+    artistas = catalog["artists"]
+    primerart = lt.firstElement(artistas)
+    parametro = primerart["BeginDate"]
+    pos = lt.isPresent(artistas,parametro) 
+    longitud = lt.size(artistas)
+    lista = lt.subList(artistas,pos,longitud)
+    # crear y llenar una nueva lista ordenada de artistas por anio_inicial y anio_final
     org = lt.newList()
     anio = int(anio_inicial)
     while anio <= int(anio_final):
-        artist = getArtistbyanio(catalog,str(anio))
+        artist = getArtistbyanio(lista,str(anio))
         if artist is not None:
             lt.addLast(org,artist)
         else:

@@ -61,8 +61,9 @@ def printArtistData(artists):
     size = lt.size(artists)
     if size:
         for artist in lt.iterator(artists):
-            print ("Nombre: " + artist["DisplayName"] + " Constituent ID:  " 
-                    + artist["ConstituentID"])
+            print ("Nombre: " + artist["DisplayName"] + " Año nacimiento:  " 
+                    + artist["BeginDate"] + " Año fallecimiento: " + artist["EndDate"]
+                    + " Nacionalidad: " + artist["Nationality"] + " Género: " + artist["Gender"])
     else:
         print ("No se encontraron artistas")
 
@@ -102,8 +103,8 @@ while True:
         print(controller.lastThree(catalog["artworks"]))
 
     elif int(inputs[0]) == 2:
-        anio_inicial = input("Ingrese el anio inicial: ")
-        anio_final = input("Ingrese el anio final: ")
+        anio_inicial = input("Ingrese el año inicial: ")
+        anio_final = input("Ingrese el año final: ")
         artistsbyanio(catalog, anio_inicial, anio_final) 
 
     else:
