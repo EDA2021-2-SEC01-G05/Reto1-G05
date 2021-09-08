@@ -50,7 +50,7 @@ def newCatalog():
                 "artists": None}
 
     catalog["artworks"] = lt.newList("SINGLE_LINKED",cmpfunction=compareDates)
-    catalog["artists"] = lt.newList("SINGLE_LINKED", cmpfunction=compareCID)
+    catalog["artists"] = lt.newList("SINGLE_LINKED", cmpfunction=compareAnio)
     return catalog
 
 # Funciones para agregar informacion al catalogo
@@ -65,6 +65,19 @@ def addArtist(catalog, artist):
 
 # Funciones de consulta
 
+def getArtistbyanio(catalog, anio):
+    """
+    Retorna un artista por su fecha de nacimiento.
+    """
+    artists = catalog["artists"]
+    pos = lt.isPresent(artists, anio)
+    if pos > 0:
+        artist = lt.getElement(artists, pos)
+        lt.deleteElement(artists, pos)
+        return artist
+    else:
+        return None
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 def compareDates(date_1, artwork):
@@ -72,15 +85,23 @@ def compareDates(date_1, artwork):
         return 0
     return -1
 
-def compareCID(cID, artist):
-    if cID in artist["ConstituentID"]:
+def compareAnio(anio, artist):
+    if anio in artist["BeginDate"]:
         return 0
     return -1
 
 # Funciones de ordenamiento
 
-def organizeArtistsbyAnio(catalog,anio_inicial,anio_final):
-    return None
+def organizeArtistsbyanio(catalog,anio_inicial,anio_final):
+    org = lt.newList()
+    anio = int(anio_inicial)
+    while anio <= int(anio_final):
+        artist = getArtistbyanio(catalog,str(anio))
+        if artist is not None:
+            lt.addLast(org,artist)
+        else:
+            anio = int(anio) + 1
+    return org
 
 def firstThree(catalog):
     """

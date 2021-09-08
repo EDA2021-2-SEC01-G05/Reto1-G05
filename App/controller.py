@@ -71,7 +71,7 @@ def loadArtists(catalog):
 def artistsbyanio(catalog,anio_inicial,anio_final):
     """
     """
-    return model.organizeArtistsbyAnio(catalog,anio_inicial,anio_final)
+    return model.organizeArtistsbyanio(catalog,anio_inicial,anio_final)
 
 # Funciones de consulta sobre el catálogo
 

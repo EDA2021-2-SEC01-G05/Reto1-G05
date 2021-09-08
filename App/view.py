@@ -72,18 +72,17 @@ def artistsbyanio(catalog, anio_inicial, anio_final):
     Retorna el total de artistas en el rango cronológico, y los primeros 3 y ultimos 3 artistas del rango.
     """
     org_anio = controller.artistsbyanio(catalog, anio_inicial, anio_final)
-    """
     last = controller.lastThree(org_anio)
     first = controller.firstThree(org_anio)
     print("\n")
-    print("Total de obras en el rango " + str(anio_inicial) + " - " + str(anio_final) + ": " + str(lt.size(org_anio)))
+    print("Total de artistas en el rango " + str(anio_inicial) + " - " + str(anio_final) + ": " + str(lt.size(org_anio)))
     print("-" * 50)
-    print ("  Estos son las 3 primeras Obras encontrados: ")
+    print ("  Estos son los 3 primeros Artistas encontrados: ")
     printArtistData(first)
     print("-" * 50)
-    print ("  Estos son las 3 ultimas Obras encontrados: ")
+    print ("  Estos son los 3 ultimos Artistas encontrados: ")
     printArtistData(last)
-    print("-" * 50)"""
+    print("-" * 50)
 
 """
 Menu principal
