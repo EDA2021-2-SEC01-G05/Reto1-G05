@@ -23,7 +23,7 @@
 import config as cf
 import model
 import csv
-
+from datetime import date
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
@@ -68,9 +68,21 @@ def loadArtists(catalog):
     
 # Funciones de ordenamiento
 
+def artistsbyanio(catalog,anio_inicial,anio_final):
+    """
+    """
+    return model.organizeArtistsbyAnio(catalog,anio_inicial,anio_final)
+
 # Funciones de consulta sobre el catálogo
-def lastThree(catalog, name):
+
+def firstThree(catalog):
     """
-    Devuelve los ultimos 3 elementos dela catalogo de artistas y obras.
+    Devuelve los primeros 3 elementos del catalogo de artistas y obras.
     """
-    return model.lastThreeArtist(catalog, name)
+    return model.firstThree(catalog)
+
+def lastThree(catalog):
+    """
+    Devuelve los ultimos 3 elementos del catalogo de artistas y obras.
+    """
+    return model.lastThree(catalog)

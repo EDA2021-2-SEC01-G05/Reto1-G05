@@ -57,6 +57,34 @@ def loadData(catalog):
 
 catalog = None
 
+def printArtistData(artists):
+    size = lt.size(artists)
+    if size:
+        for artist in lt.iterator(artists):
+            print ("Nombre: " + artist["DisplayName"] + " Constituent ID:  " 
+                    + artist["ConstituentID"])
+    else:
+        print ("No se encontraron artistas")
+
+def artistsbyanio(catalog, anio_inicial, anio_final):
+    """
+    Genera una lista cronológicamente ordenada de los artistas en un rango de anios.
+    Retorna el total de artistas en el rango cronológico, y los primeros 3 y ultimos 3 artistas del rango.
+    """
+    org_anio = controller.artistsbyanio(catalog, anio_inicial, anio_final)
+    """
+    last = controller.lastThree(org_anio)
+    first = controller.firstThree(org_anio)
+    print("\n")
+    print("Total de obras en el rango " + str(anio_inicial) + " - " + str(anio_final) + ": " + str(lt.size(org_anio)))
+    print("-" * 50)
+    print ("  Estos son las 3 primeras Obras encontrados: ")
+    printArtistData(first)
+    print("-" * 50)
+    print ("  Estos son las 3 ultimas Obras encontrados: ")
+    printArtistData(last)
+    print("-" * 50)"""
+
 """
 Menu principal
 """
@@ -70,12 +98,14 @@ while True:
         print('Obras cargados: ' + str(lt.size(catalog['artworks'])))
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         print("Ultimos 3 elementos de Artistas: ")
-        print(controller.lastThree(catalog,"artists"))
+        print(controller.lastThree(catalog["artists"]))
         print("Ultimos 3 elementos de Obras: ")
-        print(controller.lastThree(catalog,"artworks"))
+        print(controller.lastThree(catalog["artworks"]))
 
     elif int(inputs[0]) == 2:
-        pass
+        anio_inicial = input("Ingrese el anio inicial: ")
+        anio_final = input("Ingrese el anio final: ")
+        artistsbyanio(catalog, anio_inicial, anio_final) 
 
     else:
         sys.exit(0)

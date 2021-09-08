@@ -30,6 +30,7 @@ import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
+from datetime import date, timedelta
 
 """
 Se define la estructura de un catálogo de obras en el museo. 
@@ -48,8 +49,8 @@ def newCatalog():
     catalog = {"artworks": None,
                 "artists": None}
 
-    catalog["artworks"] = lt.newList()
-    catalog["artists"] = lt.newList("ARRAY_LIST")
+    catalog["artworks"] = lt.newList("SINGLE_LINKED",cmpfunction=compareDates)
+    catalog["artists"] = lt.newList("SINGLE_LINKED", cmpfunction=compareCID)
     return catalog
 
 # Funciones para agregar informacion al catalogo
@@ -66,16 +67,38 @@ def addArtist(catalog, artist):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
+def compareDates(date_1, artwork):
+    if (date_1 in artwork["DateAcquired"]):
+        return 0
+    return -1
+
+def compareCID(cID, artist):
+    if cID in artist["ConstituentID"]:
+        return 0
+    return -1
+
 # Funciones de ordenamiento
 
-def lastThreeArtist(catalog, name):
+def organizeArtistsbyAnio(catalog,anio_inicial,anio_final):
+    return None
+
+def firstThree(catalog):
+    """
+    Retorna una lista con los tres primeros elemento de un catalogo.
+    """
+    first = lt.newList()
+    for x in range(1,4):
+        e = lt.getElement(catalog, x)
+        lt.addLast(first, e)
+    return first
+    
+def lastThree(catalog):
     """
     Retorna una lista con los 3 ultimos elementos del catalogo escogido.
     """
-    last = []
+    last = lt.newList()
     for x in range(0,3):
-        pos = int(lt.size(catalog[name])) - x
-        i = (lt.getElement(catalog[name], pos))
-        last.append(i)
+        pos = int(lt.size(catalog)) - x
+        i = (lt.getElement(catalog, pos))
+        lt.addFirst(last, i)
     return last
-    
