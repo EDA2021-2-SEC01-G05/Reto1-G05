@@ -73,6 +73,16 @@ def artistsbyanio(catalog,anio_inicial,anio_final):
     """
     return model.organizeArtistsbyanio(catalog,anio_inicial,anio_final)
 
+def artworksbyartist(catalog,nombre):
+    """
+    """
+    return model.artworksbyArtist(catalog,nombre)
+
+def artworksbymedium(obras):
+    """
+    """
+    return model.artworksbyMedium(obras)
+
 # Funciones de consulta sobre el catálogo
 
 def firstThree(catalog):

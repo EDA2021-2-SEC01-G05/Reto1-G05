@@ -25,6 +25,7 @@
  """
 
 
+from App.controller import artworksbyartist
 from DISClib.DataStructures.arraylist import newList
 import config as cf
 from DISClib.ADT import list as lt
@@ -49,7 +50,7 @@ def newCatalog():
     catalog = {"artworks": None,
                 "artists": None}
 
-    catalog["artworks"] = lt.newList("SINGLE_LINKED",cmpfunction=compareDates)
+    catalog["artworks"] = lt.newList("SINGLE_LINKED")
     catalog["artists"] = lt.newList("SINGLE_LINKED", cmpfunction=compareAnio)
     return catalog
 
@@ -63,15 +64,15 @@ def addArtist(catalog, artist):
 
 # Funciones para creacion de dato
 
-def getArtistbyanio(artists, anio):
+def getElementbyparameter(lista, parameter):
     """
-    Retorna un artista por su fecha de nacimiento, luego, lo elimina de la lista
+    Retorna un elemento de una lista dado un parametro, luego, lo elimina de la lista
     """
-    pos = lt.isPresent(artists, anio)
+    pos = lt.isPresent(lista, parameter)
     if pos > 0:
-        artist = lt.getElement(artists, pos)
-        lt.deleteElement(artists, pos)
-        return artist
+        element = lt.getElement(lista, pos)
+        lt.deleteElement(lista, pos)
+        return element
     else:
         return None
 
@@ -79,13 +80,23 @@ def getArtistbyanio(artists, anio):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
-def compareDates(date_1, artwork):
-    if (date_1 in artwork["DateAcquired"]):
+def compareCID(CID, artwork):
+    if (CID in artwork["ConstituentID"]):
+        return 0
+    return -1
+
+def compareMedium(medium, artwork):
+    if (medium in artwork["Medium"]):
         return 0
     return -1
 
 def compareAnio(anio, artist):
     if anio in artist["BeginDate"]:
+        return 0
+    return -1
+
+def compareNames(nombre,artist):
+    if nombre in artist["DisplayName"]:
         return 0
     return -1
 
@@ -106,13 +117,80 @@ def organizeArtistsbyanio(catalog,anio_inicial,anio_final):
     org = lt.newList()
     anio = int(anio_inicial)
     while anio <= int(anio_final):
-        artist = getArtistbyanio(lista,str(anio))
+        artist = getElementbyparameter(lista,str(anio))
         if artist is not None:
             lt.addLast(org,artist)
         else:
             anio = int(anio) + 1
     return org
 
+def artworksbyArtist(catalog,nombre):
+    """
+    Retorna una lt con las obras de un artista por su nombre con funcion de comparacion por el medio o tecnica.
+    """
+    # crear nueva lista de artistas a partir de catalog['artists'] para comparar por nombres
+    artistas = lt.newList("SINGLE_LINKED",cmpfunction=compareNames)
+    artists = catalog["artists"]
+    for artist in lt.iterator(artists):
+        lt.addLast(artistas,artist)
+    # sacar la identidad del artista dado por el nombre
+    artista = getElementbyparameter(artistas,nombre)
+    ident = artista["ConstituentID"]
+    # crear nueva lista de obras a partir de catalog['artworks'] para comparar por ID 
+    obras1 = lt.newList("SINGLE_LINKED",cmpfunction=compareCID)
+    artworks = catalog["artworks"]
+    for artwork in lt.iterator(artworks):
+        lt.addLast(obras1,artwork)
+    # Crear lista de obras del artista con comparacion por medios o tecnica
+    obras = lt.newList("SINGLE_LINKED",cmpfunction=compareMedium)
+    i = 0
+    while i <= 0:
+        obra = getElementbyparameter(obras1,ident)
+        if obra is not None:
+            lt.addLast(obras,obra)
+        else:
+            i+=1
+    return obras
+
+def artworksbyMedium(obras):
+    """
+    Retorna una lista con tres elementos:
+    Un lt de obras con la tecnica mas usada de obras en general.
+    El total de tecnicas o medios que se usaron en obras.
+    Y la tecnica mas recurrente que se usa en obras.
+    """
+     # Crear conjunto y luego lista con los medios o tecnicas que usan las obras
+    medios_c = set()
+    medios = []
+    for obra in lt.iterator(obras):
+        medios_c.add(obra['Medium'])
+    for med in medios_c:
+        medios.append(med)
+    # Contar la cantidad de veces que se usa un medio particular en las obras
+    contar = []
+    j = 0
+    while j < len(medios):
+        q = 0
+        for obra in lt.iterator(obras):
+            if (obra['Medium']==str(medios[j])):
+                q += 1
+        contar.append(q)
+        j += 1
+    # Sacar la tecnica mas usada
+    mas_uso = max(contar)
+    indice = contar.index(mas_uso)
+    tecnica = medios[indice]
+    # hacer una lt con las obras que usa la tecnica mas recurrente
+    obras_tecnica = lt.newList()
+    k = 0
+    while k <= 0:
+        o = getElementbyparameter(obras,tecnica)
+        if o is not None:
+            lt.addLast(obras_tecnica,o)
+        else:
+            k += 1
+    return [obras_tecnica,len(medios),tecnica]
+        
 def firstThree(catalog):
     """
     Retorna una lista con los tres primeros elemento de un catalogo.

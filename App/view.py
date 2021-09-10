@@ -67,7 +67,18 @@ def printArtistData(artists):
     else:
         print ("No se encontraron artistas")
 
-def artistsbyanio(catalog, anio_inicial, anio_final):
+def printArtworkData(artworks):
+    size = lt.size(artworks)
+    if size:
+        for artwork in lt.iterator(artworks):
+            print ("ID: " + artwork["ObjectID"] + " Título: " + artwork["Title"] + " Fecha:  " 
+                    + artwork["Date"] + " Medio: " + artwork["Medium"]
+                    + " Dimensiones: " + artwork["Dimensions"] )
+    else:
+        print ("No se encontraron artistas")
+
+
+def requirimiento1(catalog, anio_inicial, anio_final):
     """
     Genera una lista cronológicamente ordenada de los artistas en un rango de anios.
     Retorna el total de artistas en el rango cronológico, y los primeros 3 y ultimos 3 artistas del rango.
@@ -84,6 +95,19 @@ def artistsbyanio(catalog, anio_inicial, anio_final):
     print ("  Estos son los 3 ultimos Artistas encontrados: ")
     printArtistData(last)
     print("-" * 50)
+
+def requerimiento3(catalog,nombre):
+    artworks = controller.artworksbyartist(catalog,nombre)
+    print("\n")
+    print("Total de obras del artista " + str(nombre) + ": " + str(lt.size(artworks)))
+    lista = controller.artworksbymedium(artworks)
+    print("-" * 50)
+    print("Total de medios usados por el artista en sus obras: " + str(lista[1]))
+    print("-" * 50)
+    print("La técnica más usada por el artista es: " + str(lista[2]))
+    print("-" * 50)
+    print("Listado de obras con la técnica más usada: ")
+    printArtworkData(lista[0])
 
 """
 Menu principal
@@ -105,7 +129,11 @@ while True:
     elif int(inputs[0]) == 2:
         anio_inicial = input("Ingrese el año inicial: ")
         anio_final = input("Ingrese el año final: ")
-        artistsbyanio(catalog, anio_inicial, anio_final) 
+        requirimiento1(catalog, anio_inicial, anio_final)
+
+    elif int(inputs[0]) == 4:
+        nombre = input("Ingrese el nombre del artista: ")
+        requerimiento3(catalog,nombre)
 
     else:
         sys.exit(0)
