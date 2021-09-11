@@ -114,7 +114,7 @@ while True:
         print("Ultimos 3 elementos de Obras: ")
         printArtworkData(controller.lastThree(catalog["artworks"]))
         
-    elif int(inputs[0]) == 2:
+    elif int(inputs[0]) == 3:
         startDate = input("Fecha de Inicio (YYYY-MM-DD): ")
         finishDate = input("Fecha Final (YYYY-MM-DD): ")
         artworksBydate(catalog, startDate, finishDate) 

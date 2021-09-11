@@ -69,6 +69,7 @@ def loadArtists(catalog):
 
 def organizeBooksbyDate(catalog, startDate, finishDate):
     """
+    Organiza las obras por fecha.
     """
     return model.organizeArtworkbyDate(catalog, startDate, finishDate)
 

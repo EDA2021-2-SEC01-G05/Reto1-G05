@@ -59,6 +59,12 @@ def newCatalog():
 
 def addArtwork(catalog, artwork):
     lt.addLast(catalog["artworks"], artwork)
+    artworks = catalog["artworks"]
+    pos = lt.isPresent(artworks, date)
+    if pos > 0:
+        artwork = lt.getElement(artworks, pos)
+        return artwork
+    return None
     
 def addArtist(catalog, artist):
     lt.addLast(catalog["artists"], artist)
