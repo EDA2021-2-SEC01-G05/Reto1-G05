@@ -25,7 +25,7 @@
  """
 
 
-from DISClib.DataStructures.arraylist import newList
+from DISClib.DataStructures.arraylist import addLast, newList
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
@@ -53,25 +53,85 @@ def newCatalog():
                                     cmpfunction=compareDates)
     catalog["artists"] = lt.newList("SINGLE_LINKED", 
                                     cmpfunction=compareCID)
+    catalog["nations"] = lt.newList("SINGLE_LINKED",
+                                    cmpfunction=compareNation)
     return catalog
 
 # Funciones para agregar informacion al catalogo
 
 def addArtwork(catalog, artwork):
     lt.addLast(catalog["artworks"], artwork)
-    artworks = catalog["artworks"]
-    pos = lt.isPresent(artworks, date)
-    if pos > 0:
-        artwork = lt.getElement(artworks, pos)
-        return artwork
-    return None
-    
+    addNation(catalog, artwork)
+
+def addNation(catalog, artwork):
+    """
+    Adiciona una nacionalidad a la lista de de nacionalidades,
+    la cual hace referencia a las obras que provengan de esa nacionalidad.
+    """
+    codes = artwork["ConstituentID"]
+    nations = catalog["nations"]
+    countries = ArtworkNationality(catalog, codes)
+    for country in lt.iterator(countries):
+        pos_country = lt.isPresent(nations, country)
+        if pos_country > 0:
+            nation = lt.getElement(nations, pos_country)
+        else:
+            nation = newCountry(country)
+            lt.addLast(nations, nation)
+        lt.addLast(nation["artworks"], artwork)
+
 def addArtist(catalog, artist):
     lt.addLast(catalog["artists"], artist)
 
 # Funciones para creacion de datos
 
+def newCountry(name):
+    """
+    Crea un nuevo diccionario de pais para agregar su 
+    nombre y obras relacionadas a ese pais.
+    """
+    country = {"name": "", "artworks": None}
+    country["name"] = name
+    country["artworks"] = lt.newList()
+    return country
+
 # Funciones de consulta
+
+def getArtistbyCode(catalog, codes):
+    """
+    Consigue a un Artista por su codigo.
+    """
+    artists = catalog["artists"]
+    group = lt.newList()
+    cIDSs = codes.replace("[", "").replace("]", "").split(",")
+    for cID in cIDSs:
+        cID =cID.strip()
+        pos = lt.isPresent(artists, cID)
+        if pos>0:
+            artist = lt.getElement(artists, pos)
+            lt.addLast(group, artist)
+    return group
+
+def getArtistname(catalog, codes):
+    """
+    Consigue el nombre de un artista.
+    """
+    artists = getArtistbyCode(catalog, codes)
+    names = ""
+    for artist in lt.iterator(artists):
+        names += artist["DisplayName"] + " "
+    return names
+
+def ArtworkNationality(catalog, codes):
+    """
+    Consigue la nacionalidad de una obra utilizando los codigos de la misma.
+    """
+    artists = getArtistbyCode(catalog, codes)
+    nations = lt.newList()
+    for artist in lt.iterator(artists):
+        if artist["Nationality"] != "":
+            lt.addLast(nations, artist["Nationality"])
+    return nations
 
 def getArtworkbydate(catalog, date):
     """
@@ -96,6 +156,15 @@ def countPurchase(artworks):
                 count_p +=1    
     return count_p
 
+def getArtworkbyNationality(catalog, country):
+    """
+    """
+    nations = catalog["nations"]
+    pos_country = lt.isPresent(nations, country)
+    if pos_country > 0:
+        nation = lt.getElement(nations, pos_country)
+    return nation["artworks"]
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 def compareDates(date_1, artwork):
@@ -108,7 +177,25 @@ def compareCID(cID, artist):
         return 0
     return -1
 
+def compareNation(nation, countries):
+    if nation.lower() in countries["name"].lower():
+        return 0
+    return -1
+
+def compareSizes(nacionality1, nacionality2):
+    return ((lt.size(nacionality1["artworks"])) > (lt.size(nacionality2["artworks"])))
+
 # Funciones de ordenamiento
+
+def organizeTopNationaly(catalog):
+    """
+    Organiza el Top de Nacionalidades con más obras.
+    """
+    sa.sort(catalog["nations"], cmpfunction=compareSizes)
+    top = {}
+    for nation in lt.iterator(catalog["nations"]):
+        top[nation["name"]] = lt.size(nation["artworks"])
+    return top
 
 def organizeArtworkbyDate(catalog, startDate, finishDate):
     """

@@ -52,7 +52,7 @@ def loadArtworks(catalog):
     """
     Carga las obras del archivo.
     """
-    booksfile = cf.data_dir + 'MoMA/Artworks-utf8-large.csv'
+    booksfile = cf.data_dir + 'MoMA/Artworks-utf8-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for artwork in input_file:
         model.addArtwork(catalog, artwork)   
@@ -60,12 +60,17 @@ def loadArtworks(catalog):
 def loadArtists(catalog):
     """
     """
-    booksfile = cf.data_dir + 'MoMA/Artists-utf8-large.csv'
+    booksfile = cf.data_dir + 'MoMA/Artists-utf8-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for artist in input_file:
         model.addArtist(catalog, artist)
 
 # Funciones de ordenamiento
+
+def organizeTopNationaliy(catalog):
+    """
+    """
+    return model.organizeTopNationaly(catalog)
 
 def organizeBooksbyDate(catalog, startDate, finishDate):
     """
@@ -74,6 +79,11 @@ def organizeBooksbyDate(catalog, startDate, finishDate):
     return model.organizeArtworkbyDate(catalog, startDate, finishDate)
 
 # Funciones de consulta sobre el catálogo
+
+def getArtistsofArtwork(catalog, codes):
+    """
+    """
+    return model.getArtistname(catalog,codes)
 
 def countPurchase(artworks):
     """
@@ -92,3 +102,7 @@ def lastThree(catalog):
     """
     return model.lastThree(catalog)
 
+def getArtworkbyNationality(catalog, name):
+    """
+    """
+    return model.getArtworkbyNationality(catalog, name)

@@ -58,11 +58,12 @@ def loadData(catalog):
 
 catalog = None
 
-def printArtworkData(artworks):
+def printArtworkData(catalog, artworks):
     size = lt.size(artworks)
     if size:
         for artwork in lt.iterator(artworks):
-            print ("Título: " + artwork["Title"] + " Fecha de Adquisición:  " 
+            artists = controller.getArtistsofArtwork(catalog, artwork["ConstituentID"])
+            print ("Título: " + artwork["Title"] + " Artista(s): " + artists + "Fecha de Adquisición:  " 
                     + artwork["DateAcquired"] + " Medio: " + artwork["Medium"] + " Dimensiones: " + artwork["Dimensions"])
     else:
         print ("No se encontraron obras")
@@ -86,15 +87,28 @@ def artworksBydate(catalog, startDate, finishDate):
     last = controller.lastThree(org_dates)
     first = controller.firstThree(org_dates)
     print("\n")
-    print("Total de obras en el rango " + str(startDate) + " - " + str(finishDate) + ": " + str(lt.size(org_dates)))
+    print("Total de obras en el rango " + str(startDate) + " - " + str(finishDate) + ": " + str(lt.size(org_dates))) 
     print("-" * 50)
     print("Total de obras compradas en el rango: " + str(controller.countPurchase(org_dates)))
     print("-" * 50)
     print ("  Estos son las 3 primeras Obras encontrados: ")
-    printArtworkData(first)
+    printArtworkData(catalog, first)
     print("-" * 50)
     print ("  Estos son las 3 ultimas Obras encontrados: ")
-    printArtworkData(last)
+    printArtworkData(catalog, last)
+    print("-" * 50)
+
+def topArtworksbyNationality(top):
+    """
+    """
+    keys = list(top.keys())
+    top_nations = ""
+    count = 0
+    for x in range(0,10):
+        count += 1
+        top_nations += str(count) + ". " + str(keys[x]) + ": " + str(top[str(keys[x])]) + " "
+    print("Top Nacionalidades con más obras obras: ")
+    print (top_nations[:-1])
     print("-" * 50)
 
 """
@@ -112,13 +126,21 @@ while True:
         print("Ultimos 3 elementos de Artistas: ")
         printArtistData(controller.lastThree(catalog["artists"]))
         print("Ultimos 3 elementos de Obras: ")
-        printArtworkData(controller.lastThree(catalog["artworks"]))
+        printArtworkData(catalog, controller.lastThree(catalog["artworks"]))
         
     elif int(inputs[0]) == 3:
         startDate = input("Fecha de Inicio (YYYY-MM-DD): ")
         finishDate = input("Fecha Final (YYYY-MM-DD): ")
         artworksBydate(catalog, startDate, finishDate) 
-
+    
+    elif int(inputs[0]) == 5:
+        top = (controller.organizeTopNationaliy(catalog))
+        topArtworksbyNationality(top)
+        first = str(list(top.keys())[0])
+        artworks = controller.getArtworkbyNationality(catalog, first)
+        printArtworkData(catalog, controller.firstThree(artworks))
+        print("-"*50)
+        printArtworkData(catalog, controller.lastThree(artworks))
     else:
         sys.exit(0)
 sys.exit(0)
