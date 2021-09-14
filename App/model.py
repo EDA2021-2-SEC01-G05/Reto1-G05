@@ -40,7 +40,7 @@ otra para los artistas.
 
 # Construccion de modelos
 
-def newCatalog():
+def newCatalog(type):
     """
     Inicializa el catálogo de obras. Crea una lista vacia para guardar
     todos las obras, adicionalmente, crea una lista vacia para los artistas.
@@ -49,11 +49,11 @@ def newCatalog():
     catalog = {"artworks": None,
                 "artists": None}
 
-    catalog["artworks"] = lt.newList("SINGLE_LINKED", 
+    catalog["artworks"] = lt.newList(type, 
                                     cmpfunction=compareDates)
-    catalog["artists"] = lt.newList("SINGLE_LINKED", 
+    catalog["artists"] = lt.newList(type, 
                                     cmpfunction=compareCID)
-    catalog["nations"] = lt.newList("SINGLE_LINKED",
+    catalog["nations"] = lt.newList(type,
                                     cmpfunction=compareNation)
     return catalog
 

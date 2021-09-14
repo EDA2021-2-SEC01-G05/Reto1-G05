@@ -43,11 +43,11 @@ def printMenu():
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
     print("0- Salir")
 
-def initCatalog():
+def initCatalog(type):
     """
     Inicializa el catalogo de libros
     """
-    return controller.initCatalog()
+    return controller.initCatalog(type)
 
 
 def loadData(catalog):
@@ -119,7 +119,8 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-        catalog = initCatalog()
+        type = input("Selecciones 1 o 2 si quiere que la lista de datos se LINKED_LIST o ARRAY_LIST respectivamente\n")
+        catalog = initCatalog(type)
         loadData(catalog)
         print('Obras cargados: ' + str(lt.size(catalog['artworks'])))
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
