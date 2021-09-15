@@ -81,6 +81,9 @@ def organizeBooksbyDate(catalog, startDate, finishDate):
     """
     return model.organizeArtworkbyDate(catalog, startDate, finishDate)
 
+def organizeCatalogArtworksbyDate(catalog, size):
+    return model.sortArtworksbyDate(catalog, size)
+
 # Funciones de consulta sobre el catálogo
 
 def getArtistsofArtwork(catalog, codes):

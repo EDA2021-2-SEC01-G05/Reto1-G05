@@ -31,6 +31,7 @@ from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
 from datetime import date, timedelta
+import time
 
 """
 Se define la estructura de un catálogo de obras en el museo. 
@@ -158,6 +159,8 @@ def countPurchase(artworks):
 
 def getArtworkbyNationality(catalog, country):
     """
+    Devuelve todos las obras que pertenezcan a la nacionalidad
+    solicitada.
     """
     nations = catalog["nations"]
     pos_country = lt.isPresent(nations, country)
@@ -185,6 +188,9 @@ def compareNation(nation, countries):
 def compareSizes(nacionality1, nacionality2):
     return ((lt.size(nacionality1["artworks"])) > (lt.size(nacionality2["artworks"])))
 
+def cmpArtworkByDateAcquired(artwork1, artwork2):
+    return (date.fromisoformat(artwork1["DateAcquired"]) < date.fromisoformat(artwork2["DateAcquired"]))
+
 # Funciones de ordenamiento
 
 def organizeTopNationaly(catalog):
@@ -197,6 +203,12 @@ def organizeTopNationaly(catalog):
         top[nation["name"]] = lt.size(nation["artworks"])
     return top
 
+def sortArtworksbyDate(catalog, size):
+    sub_list = lt.subList(catalog["artworks"], 1, size)
+    sub_list = sub_list.copy()
+    sorted_list = sa.sort(sub_list, cmpArtworkByDateAcquired)
+    return sorted_list
+
 def organizeArtworkbyDate(catalog, startDate, finishDate):
     """
     Organiza y retorna las obras que esten en un rango de 
@@ -206,13 +218,16 @@ def organizeArtworkbyDate(catalog, startDate, finishDate):
     d_0 = date.fromisoformat(startDate)
     d_f = date.fromisoformat(finishDate)
     delta = d_f - d_0
+    start_time = time.process_time()
     for day in range(delta.days + 1):
         new_day = d_0 + timedelta(days=day)
         new_date = new_day.strftime("%Y-%m-%d")
         art = getArtworkbydate(catalog, new_date)
         if art is not None:
             lt.addLast(org, art)
-    return org
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
+    return elapsed_time_mseg, org
 
 def firstThree(catalog):
     """

@@ -84,12 +84,12 @@ def artworksBydate(catalog, startDate, finishDate):
     total de obras adquiridas por compra y las primeras 3 y utimas 3 obras del rango.
     """
     org_dates = controller.organizeBooksbyDate(catalog, startDate, finishDate)
-    last = controller.lastThree(org_dates)
-    first = controller.firstThree(org_dates)
+    last = controller.lastThree(org_dates[1])
+    first = controller.firstThree(org_dates[1])
     print("\n")
-    print("Total de obras en el rango " + str(startDate) + " - " + str(finishDate) + ": " + str(lt.size(org_dates))) 
+    print("Total de obras en el rango " + str(startDate) + " - " + str(finishDate) + ": " + str(lt.size(org_dates[1]))) 
     print("-" * 50)
-    print("Total de obras compradas en el rango: " + str(controller.countPurchase(org_dates)))
+    print("Total de obras compradas en el rango: " + str(controller.countPurchase(org_dates[1])))
     print("-" * 50)
     print ("  Estos son las 3 primeras Obras encontrados: ")
     printArtworkData(catalog, first)
@@ -97,6 +97,7 @@ def artworksBydate(catalog, startDate, finishDate):
     print ("  Estos son las 3 ultimas Obras encontrados: ")
     printArtworkData(catalog, last)
     print("-" * 50)
+    print("Para la muestra de elementos, el tiempo (mseg) es: ", str(org_dates[0]))
 
 def topArtworksbyNationality(top):
     """
@@ -130,6 +131,8 @@ while True:
         printArtworkData(catalog, controller.lastThree(catalog["artworks"]))
         
     elif int(inputs[0]) == 3:
+        #size = input("Indique tamaño de la muestra: ")
+        #org_catalog = controller.organizeCatalogArtworksbyDate(catalog, int(size))
         startDate = input("Fecha de Inicio (YYYY-MM-DD): ")
         finishDate = input("Fecha Final (YYYY-MM-DD): ")
         artworksBydate(catalog, startDate, finishDate) 
