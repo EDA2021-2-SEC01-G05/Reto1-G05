@@ -43,6 +43,13 @@ def printMenu():
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
     print("0- Salir")
 
+def printOptionSort():
+    print("Como quiere sortear los datos: ")
+    print("1. Inserion Sort")
+    print("2. Shell Sort")
+    print("3. Merge Sort")
+    print("4. Quick Sort")
+
 def initCatalog(type):
     """
     Inicializa el catalogo de libros
@@ -77,13 +84,13 @@ def printArtistData(artists):
     else:
         print ("No se encontraron artistas")
 
-def artworksBydate(catalog, startDate, finishDate):
+def artworksBydate(catalog, startDate, finishDate, size, option):
     """
     Genera una lista cronológicamente ordenada de las obras adquiridas 
     por el museo en un rango de fecha. Retorna el total de obras en el rango cronológico, 
     total de obras adquiridas por compra y las primeras 3 y utimas 3 obras del rango.
     """
-    org_dates = controller.organizeBooksbyDate(catalog, startDate, finishDate)
+    org_dates = controller.organizeBooksbyDate(catalog, startDate, finishDate, size, option)
     last = controller.lastThree(org_dates[1])
     first = controller.firstThree(org_dates[1])
     print("\n")
@@ -97,7 +104,7 @@ def artworksBydate(catalog, startDate, finishDate):
     print ("  Estos son las 3 ultimas Obras encontrados: ")
     printArtworkData(catalog, last)
     print("-" * 50)
-    print("Para la muestra de elementos, el tiempo (mseg) es: ", str(org_dates[0]))
+    print("Para la muestra de elementos " + size + " el tiempo (mseg) es: ", str(org_dates[0]))
 
 def topArtworksbyNationality(top):
     """
@@ -131,11 +138,14 @@ while True:
         printArtworkData(catalog, controller.lastThree(catalog["artworks"]))
         
     elif int(inputs[0]) == 3:
-        #size = input("Indique tamaño de la muestra: ")
-        #org_catalog = controller.organizeCatalogArtworksbyDate(catalog, int(size))
+        size = input("Indique tamaño de la muestra: ")
+        printOptionSort()
+        option = input('Seleccione una opción para continuar\n')
         startDate = input("Fecha de Inicio (YYYY-MM-DD): ")
         finishDate = input("Fecha Final (YYYY-MM-DD): ")
-        artworksBydate(catalog, startDate, finishDate) 
+        #org_dates = controller.organizeBooksbyDate(catalog, startDate, finishDate, size)
+        #print(org_dates[1])
+        artworksBydate(catalog, startDate, finishDate, size, option) 
     
     elif int(inputs[0]) == 5:
         top = (controller.organizeTopNationaliy(catalog))

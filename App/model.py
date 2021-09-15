@@ -29,6 +29,9 @@ from DISClib.DataStructures.arraylist import addLast, newList
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import insertionsort as si
+from DISClib.Algorithms.Sorting import mergesort as ms
+from DISClib.Algorithms.Sorting import quicksort as qs
 assert cf
 from datetime import date, timedelta
 import time
@@ -61,6 +64,9 @@ def newCatalog(type):
 # Funciones para agregar informacion al catalogo
 
 def addArtwork(catalog, artwork):
+    if artwork["DateAcquired"] == "" or artwork["DateAcquired"] == "Unknown":
+        hoy = date.today()
+        artwork["DateAcquired"] = hoy.strftime("%Y-%m-%d")
     lt.addLast(catalog["artworks"], artwork)
     addNation(catalog, artwork)
 
@@ -134,11 +140,11 @@ def ArtworkNationality(catalog, codes):
             lt.addLast(nations, artist["Nationality"])
     return nations
 
-def getArtworkbydate(catalog, date):
+def getArtworkbydate(artworks, date):
     """
     Retorna una obra por su fecha de adquisición.
     """
-    artworks = catalog["artworks"]
+    
     pos = lt.isPresent(artworks, date)
     if pos > 0:
         artwork = lt.getElement(artworks, pos)
@@ -203,13 +209,20 @@ def organizeTopNationaly(catalog):
         top[nation["name"]] = lt.size(nation["artworks"])
     return top
 
-def sortArtworksbyDate(catalog, size):
+def sortArtworksbyDate(catalog, size, option):
     sub_list = lt.subList(catalog["artworks"], 1, size)
     sub_list = sub_list.copy()
-    sorted_list = sa.sort(sub_list, cmpArtworkByDateAcquired)
+    if int(option) == 1:
+        sorted_list = si.sort(sub_list, cmpArtworkByDateAcquired)
+    elif int(option) == 2:
+        sorted_list = sa.sort(sub_list, cmpArtworkByDateAcquired)
+    elif int(option) == 3:
+        sorted_list = ms.sort(sub_list, cmpArtworkByDateAcquired)
+    elif int(option) == 4:
+        sorted_list = qs.sort(sub_list, cmpArtworkByDateAcquired)
     return sorted_list
 
-def organizeArtworkbyDate(catalog, startDate, finishDate):
+def organizeArtworkbyDate(catalog, startDate, finishDate, size, option):
     """
     Organiza y retorna las obras que esten en un rango de 
     una fecha inicial y final.
@@ -219,14 +232,16 @@ def organizeArtworkbyDate(catalog, startDate, finishDate):
     d_f = date.fromisoformat(finishDate)
     delta = d_f - d_0
     start_time = time.process_time()
+    artworks = sortArtworksbyDate(catalog, int(size), option)
+    stop_time = time.process_time()
+    elapsed_time_mseg = (stop_time - start_time)*1000
     for day in range(delta.days + 1):
         new_day = d_0 + timedelta(days=day)
         new_date = new_day.strftime("%Y-%m-%d")
-        art = getArtworkbydate(catalog, new_date)
+        art = getArtworkbydate(artworks, new_date)
         if art is not None:
             lt.addLast(org, art)
-    stop_time = time.process_time()
-    elapsed_time_mseg = (stop_time - start_time)*1000
+    
     return elapsed_time_mseg, org
 
 def firstThree(catalog):

@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from DISClib.ADT.list import size
 import config as cf
 import model
 import csv
@@ -75,14 +76,12 @@ def organizeTopNationaliy(catalog):
     """
     return model.organizeTopNationaly(catalog)
 
-def organizeBooksbyDate(catalog, startDate, finishDate):
+def organizeBooksbyDate(catalog, startDate, finishDate, size, option):
     """
     Organiza las obras por fecha.
     """
-    return model.organizeArtworkbyDate(catalog, startDate, finishDate)
+    return model.organizeArtworkbyDate(catalog, startDate, finishDate, size, option)
 
-def organizeCatalogArtworksbyDate(catalog, size):
-    return model.sortArtworksbyDate(catalog, size)
 
 # Funciones de consulta sobre el catálogo
 
