@@ -225,7 +225,7 @@ def sortArtworksbyDate(catalog, size, option):
 def organizeArtworkbyDate(catalog, startDate, finishDate, size, option):
     """
     Organiza y retorna las obras que esten en un rango de 
-    una fecha inicial y final.
+    una fecha inicial y final. ()()()
     """
     org = lt.newList()
     d_0 = date.fromisoformat(startDate)

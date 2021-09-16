@@ -143,8 +143,6 @@ while True:
         option = input('Seleccione una opción para continuar\n')
         startDate = input("Fecha de Inicio (YYYY-MM-DD): ")
         finishDate = input("Fecha Final (YYYY-MM-DD): ")
-        #org_dates = controller.organizeBooksbyDate(catalog, startDate, finishDate, size)
-        #print(org_dates[1])
         artworksBydate(catalog, startDate, finishDate, size, option) 
     
     elif int(inputs[0]) == 5:

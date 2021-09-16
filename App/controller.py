@@ -63,6 +63,7 @@ def loadArtworks(catalog):
 
 def loadArtists(catalog):
     """
+    Carga los artistas.
     """
     booksfile = cf.data_dir + 'MoMA/Artists-utf8-small.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
