@@ -98,12 +98,10 @@ def artworksbyMedium(obras):
 
 def firstThree(catalog):
     """
-    Devuelve los primeros 3 elementos del catalogo de artistas y obras.
     """
     return model.firstThree(catalog)
 
 def lastThree(catalog):
     """
-    Devuelve los ultimos 3 elementos del catalogo de artistas y obras.
     """
     return model.lastThree(catalog)

@@ -53,7 +53,7 @@ def loadData(catalog):
     """
     Carga los libros en la estructura de datos
     """
-    controller.loadData(catalog)
+    return controller.loadData(catalog)
 
 catalog = None
 
@@ -84,11 +84,11 @@ def requerimiento1(catalog, anio_inicial, anio_final):
     Retorna el total de artistas en el rango cronológico, y los primeros 3 y ultimos 3 artistas del rango.
     """
     org_anio = controller.artistsbyAnio(catalog, anio_inicial, anio_final)
-    last = controller.lastThree(org_anio)
-    first = controller.firstThree(org_anio)
     print("\n")
     print("Total de artistas en el rango " + str(anio_inicial) + " - " + str(anio_final) + ": " + str(lt.size(org_anio)))
     print("-" * 50)
+    last = controller.lastThree(org_anio)
+    first = controller.firstThree(org_anio)
     print ("  Estos son los 3 primeros Artistas encontrados: ")
     printArtistData(first)
     print("-" * 50)
@@ -124,7 +124,7 @@ while True:
         print('Obras cargados: ' + str(lt.size(catalog['artworks'])))
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         print("Ultimos 3 elementos de Artistas: ")
-        print(controller.lastThree(catalog["artists"]))
+        print(controller.firstThree(catalog["artists"]))
         print("Ultimos 3 elementos de Obras: ")
         print(controller.lastThree(catalog["artworks"]))
 

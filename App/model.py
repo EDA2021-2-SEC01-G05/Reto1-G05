@@ -27,6 +27,7 @@
 import config as cf
 from DISClib.ADT import list as lt
 assert cf
+from DISClib.Algorithms.Sorting import mergesort as merge
 
 """
 Se define la estructura de un catálogo de obras en el museo. 
@@ -45,8 +46,8 @@ def newCatalog():
     catalog = {"artworks": None,
                 "artists": None}
 
-    catalog["artworks"] = lt.newList("SINGLE_LINKED")
-    catalog["artists"] = lt.newList("SINGLE_LINKED", cmpfunction=compareAnio)
+    catalog["artworks"] = lt.newList("SINGLE_LINKED", cmpfunction=compareOID)
+    catalog["artists"] = lt.newList("SINGLE_LINKED", cmpfunction=compareID)
     return catalog
 
 # Funciones para agregar informacion al catalogo
@@ -86,10 +87,31 @@ def getElementbyparameter(lista, parameter):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
-def compareCID(CID, artwork):
-    if (CID in artwork["ConstituentID"]):
+def mayorQue(a,b):
+    if (a > b):
         return 0
     return -1
+
+def compareID(ID, artist):
+    if (ID in artist['ConstituentID']):
+        return 0
+    return -1
+
+def compareOID(OID, artwork):
+    if (OID in artwork['ObjectID']):
+        return 0
+    return -1
+
+def compareCID(CID, artwork):
+    x = str(CID)
+    string1 = '[' + x + ']'
+    string2 = ',' + x + ','
+    if (string1 in artwork["ConstituentID"]):
+        return 0
+    elif (string2 in artwork["ConstituentID"]):
+        return 0
+    else:
+        return -1
 
 def compareMedium(medium, artwork):
     if (medium in artwork["Medium"]):
@@ -112,20 +134,18 @@ def organizeArtistsbyanio(catalog,anio_inicial,anio_final):
     """
     Organiza y retorna los artistas que esten en un rango de una fecha inicial y final.
     """
-    # crear copia de la lista artistas para iterar sobre esta y no modificar el catalogo original
-    artistas = catalog["artists"]
-    primerart = lt.firstElement(artistas)
-    parametro = primerart["BeginDate"]
-    pos = lt.isPresent(artistas,parametro) 
-    longitud = lt.size(artistas)
-    lista = lt.subList(artistas,pos,longitud)
+    # crear lista artistas con funcion de comparacion compareAnio para iterar sobre esta y no modificar el catalogo original
+    artistas = lt.newList('SINGLE_LINKED',cmpfunction=compareAnio)
+    artists = catalog["artists"]
+    for artist in lt.iterator(artists):
+        lt.addLast(artistas,artist)
     # crear y llenar una nueva lista ordenada de artistas por anio_inicial y anio_final
     org = lt.newList()
     anio = int(anio_inicial)
     while anio <= int(anio_final):
-        artist = getElementbyparameterE(lista,str(anio))
-        if artist is not None:
-            lt.addLast(org,artist)
+        artista = getElementbyparameterE(artistas,str(anio))
+        if artista is not None:
+            lt.addLast(org,artista)
         else:
             anio = int(anio) + 1
     return org
@@ -168,7 +188,7 @@ def listaMedios(obras):
     for obra in lt.iterator(obras):
         i = 0
         for medio in lt.iterator(medios):
-            if (obra['Medium'] == medio['Medium']):
+            if (str(obra['Medium']) == str(medio['Medium'])):
                 i += 1
         if (i == 0):
             lt.addLast(medios,obra)
@@ -186,8 +206,19 @@ def artworksbyMedium(obras):
     """
     Retorna un lt con las obras que usan la tecnica o medio mas recurrente en obras.
     """
+    # contamos numero de veces que aparece cada medio y agregamos este numero a una lista (numeros)
     medios = listaMedios(obras)
-    num = contarMedios(obras)
+    numeros = lt.newList()
+    for medio in lt.iterator(medios):
+        i = 0
+        for obra in lt.iterator(obras):
+            if (medio['Medium'] == obra['Medium']):
+                i += 1
+        lt.addLast(numeros,i)
+    # ordenamos la lista y sacamos el numero mas grande
+    merge.sort(numeros,cmpfunction=mayorQue)
+    num = lt.lastElement(numeros)
+    # hallamos el medio (medio) correspondiente a este numero mas grande (num)
     for medio in lt.iterator(medios):
         i = 0
         for obra in lt.iterator(obras):
@@ -195,6 +226,7 @@ def artworksbyMedium(obras):
                 i += 1
         if i is num:
             break
+    # hacemos una lista (lista) con las obras que usan el medio hallado (medio)
     lista = lt.newList()
     if medio is not None:
         for obra in lt.iterator(obras):
@@ -202,23 +234,17 @@ def artworksbyMedium(obras):
                 lt.addLast(lista,obra)
         return lista
         
-def firstThree(catalog):
+def firstThree(lista):
     """
-    Retorna una lista con los tres primeros elemento de un catalogo.
+    Retorna una lista con los tres primeros elementos de una lista.
     """
-    first = lt.newList()
-    for x in range(1,4):
-        e = lt.getElement(catalog, x)
-        lt.addLast(first, e)
+    first = lt.subList(lista,1,3)
     return first
     
-def lastThree(catalog):
+def lastThree(lista):
     """
-    Retorna una lista con los 3 ultimos elementos del catalogo escogido.
+    Retorna una lista con los 3 ultimos elementos de una lista.
     """
-    last = lt.newList()
-    for x in range(0,3):
-        pos = int(lt.size(catalog)) - x
-        i = (lt.getElement(catalog, pos))
-        lt.addFirst(last, i)
+    last = lt.subList(lista,lt.size(lista)-2,3)
     return last
+   
