@@ -24,14 +24,9 @@
  * Dario Correal - Version inicial
  """
 
-
-from App.controller import artworksbyartist
-from DISClib.DataStructures.arraylist import newList
 import config as cf
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import shellsort as sa
 assert cf
-from datetime import date, timedelta
 
 """
 Se define la estructura de un catálogo de obras en el museo. 
@@ -64,7 +59,7 @@ def addArtist(catalog, artist):
 
 # Funciones para creacion de dato
 
-def getElementbyparameter(lista, parameter):
+def getElementbyparameterE(lista, parameter):
     """
     Retorna un elemento de una lista dado un parametro, luego, lo elimina de la lista
     """
@@ -72,6 +67,17 @@ def getElementbyparameter(lista, parameter):
     if pos > 0:
         element = lt.getElement(lista, pos)
         lt.deleteElement(lista, pos)
+        return element
+    else:
+        return None
+
+def getElementbyparameter(lista, parameter):
+    """
+    Retorna un elemento de una lista dado un parametro, no lo elimina de la lista
+    """
+    pos = lt.isPresent(lista, parameter)
+    if pos > 0:
+        element = lt.getElement(lista, pos)
         return element
     else:
         return None
@@ -117,7 +123,7 @@ def organizeArtistsbyanio(catalog,anio_inicial,anio_final):
     org = lt.newList()
     anio = int(anio_inicial)
     while anio <= int(anio_final):
-        artist = getElementbyparameter(lista,str(anio))
+        artist = getElementbyparameterE(lista,str(anio))
         if artist is not None:
             lt.addLast(org,artist)
         else:
@@ -145,51 +151,56 @@ def artworksbyArtist(catalog,nombre):
     obras = lt.newList("SINGLE_LINKED",cmpfunction=compareMedium)
     i = 0
     while i <= 0:
-        obra = getElementbyparameter(obras1,ident)
+        obra = getElementbyparameterE(obras1,ident)
         if obra is not None:
             lt.addLast(obras,obra)
         else:
             i+=1
     return obras
 
+def listaMedios(obras):
+    """
+    Retorna lista con representantes unicos para cada medio que se usa en una lista de obras 
+    """
+    first = lt.firstElement(obras)
+    medios = lt.newList("SINGLE_LINKED",cmpfunction=compareMedium)
+    lt.addFirst(medios,first)        
+    for obra in lt.iterator(obras):
+        i = 0
+        for medio in lt.iterator(medios):
+            if (obra['Medium'] == medio['Medium']):
+                i += 1
+        if (i == 0):
+            lt.addLast(medios,obra)
+    return medios
+
+def contarMedios(obras):
+    """
+    Cuenta la cantidad de medios que se usan en una lista de obras
+    """
+    medios = listaMedios(obras)
+    num = lt.size(medios)
+    return num
+    
 def artworksbyMedium(obras):
     """
-    Retorna una lista con tres elementos:
-    Un lt de obras con la tecnica mas usada de obras en general.
-    El total de tecnicas o medios que se usaron en obras.
-    Y la tecnica mas recurrente que se usa en obras.
+    Retorna un lt con las obras que usan la tecnica o medio mas recurrente en obras.
     """
-     # Crear conjunto y luego lista con los medios o tecnicas que usan las obras
-    medios_c = set()
-    medios = []
-    for obra in lt.iterator(obras):
-        medios_c.add(obra['Medium'])
-    for med in medios_c:
-        medios.append(med)
-    # Contar la cantidad de veces que se usa un medio particular en las obras
-    contar = []
-    j = 0
-    while j < len(medios):
-        q = 0
+    medios = listaMedios(obras)
+    num = contarMedios(obras)
+    for medio in lt.iterator(medios):
+        i = 0
         for obra in lt.iterator(obras):
-            if (obra['Medium']==str(medios[j])):
-                q += 1
-        contar.append(q)
-        j += 1
-    # Sacar la tecnica mas usada
-    mas_uso = max(contar)
-    indice = contar.index(mas_uso)
-    tecnica = medios[indice]
-    # hacer una lt con las obras que usa la tecnica mas recurrente
-    obras_tecnica = lt.newList()
-    k = 0
-    while k <= 0:
-        o = getElementbyparameter(obras,tecnica)
-        if o is not None:
-            lt.addLast(obras_tecnica,o)
-        else:
-            k += 1
-    return [obras_tecnica,len(medios),tecnica]
+            if (medio['Medium'] == obra['Medium']):
+                i += 1
+        if i is num:
+            break
+    lista = lt.newList()
+    if medio is not None:
+        for obra in lt.iterator(obras):
+            if (obra['Medium'] ==  medio['Medium']):
+                lt.addLast(lista,obra)
+        return lista
         
 def firstThree(catalog):
     """

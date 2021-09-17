@@ -23,7 +23,7 @@
 import config as cf
 import model
 import csv
-from datetime import date
+from DISClib.ADT import list as lt
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
@@ -68,17 +68,28 @@ def loadArtists(catalog):
     
 # Funciones de ordenamiento
 
-def artistsbyanio(catalog,anio_inicial,anio_final):
+def artistsbyAnio(catalog,anio_inicial,anio_final):
     """
     """
     return model.organizeArtistsbyanio(catalog,anio_inicial,anio_final)
 
-def artworksbyartist(catalog,nombre):
+def artworksbyArtist(catalog,nombre):
     """
     """
     return model.artworksbyArtist(catalog,nombre)
 
-def artworksbymedium(obras):
+def medioMax(obras):
+    """
+    """
+    medio = lt.firstElement(obras)
+    return medio['Medium']
+
+def contarMedios(obras):
+    """
+    """
+    return model.contarMedios(obras)
+
+def artworksbyMedium(obras):
     """
     """
     return model.artworksbyMedium(obras)

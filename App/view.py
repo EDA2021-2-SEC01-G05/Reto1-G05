@@ -59,7 +59,7 @@ catalog = None
 
 def printArtistData(artists):
     size = lt.size(artists)
-    if size:
+    if size>0:
         for artist in lt.iterator(artists):
             print ("Nombre: " + artist["DisplayName"] + " Año nacimiento:  " 
                     + artist["BeginDate"] + " Año fallecimiento: " + artist["EndDate"]
@@ -69,7 +69,7 @@ def printArtistData(artists):
 
 def printArtworkData(artworks):
     size = lt.size(artworks)
-    if size:
+    if size>0:
         for artwork in lt.iterator(artworks):
             print ("ID: " + artwork["ObjectID"] + " Título: " + artwork["Title"] + " Fecha:  " 
                     + artwork["Date"] + " Medio: " + artwork["Medium"]
@@ -78,12 +78,12 @@ def printArtworkData(artworks):
         print ("No se encontraron artistas")
 
 
-def requirimiento1(catalog, anio_inicial, anio_final):
+def requerimiento1(catalog, anio_inicial, anio_final):
     """
     Genera una lista cronológicamente ordenada de los artistas en un rango de anios.
     Retorna el total de artistas en el rango cronológico, y los primeros 3 y ultimos 3 artistas del rango.
     """
-    org_anio = controller.artistsbyanio(catalog, anio_inicial, anio_final)
+    org_anio = controller.artistsbyAnio(catalog, anio_inicial, anio_final)
     last = controller.lastThree(org_anio)
     first = controller.firstThree(org_anio)
     print("\n")
@@ -97,17 +97,19 @@ def requirimiento1(catalog, anio_inicial, anio_final):
     print("-" * 50)
 
 def requerimiento3(catalog,nombre):
-    artworks = controller.artworksbyartist(catalog,nombre)
+    artworks = controller.artworksbyArtist(catalog,nombre)
     print("\n")
     print("Total de obras del artista " + str(nombre) + ": " + str(lt.size(artworks)))
-    lista = controller.artworksbymedium(artworks)
+    lista = controller.artworksbyMedium(artworks)
+    medios = controller.contarMedios(artworks)
+    medio_max = controller.medioMax(lista)
     print("-" * 50)
-    print("Total de medios usados por el artista en sus obras: " + str(lista[1]))
+    print("Total de medios usados por el artista en sus obras: " + str(medios))
     print("-" * 50)
-    print("La técnica más usada por el artista es: " + str(lista[2]))
+    print("La técnica más usada por el artista es: " + str(medio_max))
     print("-" * 50)
     print("Listado de obras con la técnica más usada: ")
-    printArtworkData(lista[0])
+    printArtworkData(lista)
 
 """
 Menu principal
@@ -129,7 +131,7 @@ while True:
     elif int(inputs[0]) == 2:
         anio_inicial = input("Ingrese el año inicial: ")
         anio_final = input("Ingrese el año final: ")
-        requirimiento1(catalog, anio_inicial, anio_final)
+        requerimiento1(catalog, anio_inicial, anio_final)
 
     elif int(inputs[0]) == 4:
         nombre = input("Ingrese el nombre del artista: ")
