@@ -119,6 +119,7 @@ def topArtworksbyNationality(top):
     print("Top Nacionalidades con más obras obras: ")
     print (top_nations[:-1])
     print("-" * 50)
+
 def printArtistData_Req1(artists):
     size = lt.size(artists)
     if size>0:
@@ -160,8 +161,8 @@ def requerimiento1(catalog, anio_inicial, anio_final):
     print("\n")
     print("Total de artistas en el rango " + str(anio_inicial) + " - " + str(anio_final) + ": " + str(lt.size(org_anio)))
     print("-" * 50)
-    last = controller.lastThree(org_anio)
-    first = controller.firstThree(org_anio)
+    last = controller.lastThreeD(org_anio)
+    first = controller.firstThreeD(org_anio)
     print ("  Estos son los 3 primeros Artistas encontrados: ")
     printArtistData_Req1(first)
     print("-" * 50)

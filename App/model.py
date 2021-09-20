@@ -549,17 +549,37 @@ def masCostosas(obras):
         i += 1
     return costosas
 
-def firstThree(lista):
+def firstThreeD(lista):
     """
     Retorna una lista con los tres primeros elementos de una lista.
     """
     first = lt.subList(lista,1,3)
     return first
     
-def lastThree(lista):
+def lastThreeD(lista):
     """
     Retorna una lista con los 3 ultimos elementos de una lista.
     """
     last = lt.subList(lista,lt.size(lista)-2,3)
     return last
    
+def firstThree(catalog):
+    """
+    Retorna una lista con los tres primeros elemento de un catalogo.
+    """
+    first = lt.newList()
+    for x in range(1,4):
+        e = lt.getElement(catalog, x)
+        lt.addLast(first, e)
+    return first
+    
+def lastThree(catalog):
+    """
+    Retorna una lista con los 3 ultimos elementos del catalogo escogido.
+    """
+    last = lt.newList()
+    for x in range(0,3):
+        pos = int(lt.size(catalog)) - x
+        i = (lt.getElement(catalog, pos))
+        lt.addFirst(last, i)
+    return last

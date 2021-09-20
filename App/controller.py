@@ -102,6 +102,11 @@ def countPurchase(artworks):
     """
     return model.countPurchase(artworks)
 
+def artistsbyAnio(catalog,anio_inicial,anio_final):
+    """
+    """
+    return model.organizeArtistsbyanio(catalog,anio_inicial,anio_final)
+
 def artworksbyArtist(catalog,nombre):
     """
     """
@@ -156,15 +161,24 @@ def masCostosas(obras):
 
 # Funciones de consulta sobre el catálogo
 
+def firstThreeD(catalog):
+    """
+    """
+    return model.firstThreeD(catalog)
+
+def lastThreeD(catalog):
+    """
+    """
+    return model.lastThreeD(catalog)
+
 def firstThree(catalog):
     """
+    Devuelve los primeros 3 elementos dela catalogo de artistas y obras.
     """
     return model.firstThree(catalog)
 
 def lastThree(catalog):
     """
+    Devuelve los ultimos 3 elementos dela catalogo de artistas y obras.
     """
-    return model.lastThree(catalog)
-
-
-    
+    return model.lastThree(catalog)   
