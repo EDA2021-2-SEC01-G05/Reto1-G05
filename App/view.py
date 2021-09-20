@@ -42,6 +42,7 @@ def printMenu():
     print("4- Clasificar las obras de los artistas por tecnica")
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
     print("6- Calcular costo de transportar las obras de un departamento")
+    print("0-  Salir")
 
 def initCatalog():
     """
@@ -86,7 +87,7 @@ def printArtworkData_Req5(artworks):
                     + ", ID artistas: " + artwork['ConstituentID'] + ", Clasificacion: " 
                     + artwork['Classification'] + ", Fecha:  " + artwork["Date"] + ", Medio: " 
                     + artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] 
-                    + ", Costo de transporte (USD): " + str(artwork['Transcost (USD)']))
+                    + ", Costo de transporte (USD): " + str(int(artwork['Transcost (USD)'])))
     else:
         print ("No se encontraron artistas")
 

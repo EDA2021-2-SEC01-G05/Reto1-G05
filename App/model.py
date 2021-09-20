@@ -60,6 +60,49 @@ def addArtist(catalog, artist):
 
 # Funciones para creacion de dato
 
+def costoTransporte(obras):
+    """
+    Calcular el costo de transporte de cada obra en obras y agregar el dato al elemento correspondiente.
+    """
+    for obra in lt.iterator(obras):
+        # sacar los datos relevantes y estipular valores por defecto
+        peso = obra['Weight (kg)']
+        largo = obra['Length (cm)']
+        ancho = obra['Width (cm)']
+        profundidad = obra['Depth (cm)']
+        altura = obra['Height (cm)']
+        if peso is "":
+            peso = 0
+        if largo is "":
+            largo = 0
+        if ancho is "":
+            ancho = 0
+        if profundidad is "":
+            profundidad = 0
+        if altura is "":
+            altura = 0
+        # calcular el tamano (tres posibles formas)
+        t1 = (float(ancho)/100)*(float(altura)/100)
+        t2 = (float(ancho)/100)*(float(largo)/100)
+        t3 = (float(ancho)/100)*(float(altura)/100)*(float(profundidad)/100)
+        # crear lista para comparar los tamanos y sacar el mas grande
+        lista = lt.newList()
+        lt.addLast(lista,peso)
+        lt.addLast(lista,t3)
+        lt.addLast(lista,t2)
+        lt.addLast(lista,t1)
+        merge.sort(lista,cmpfunction=ordenAscendente)
+        tamano = lt.lastElement(lista)
+        # estipular el costo y agregarlo a los datos de la obra
+        if tamano == 0:
+            costo = 48
+        else:
+            costo = tamano*72
+        obra['Transcost (USD)'] = costo
+    return obras
+
+# Funciones de consulta
+
 def getElementbyparameterE(lista, parameter):
     """
     Retorna un elemento de una lista dado un parametro, luego, lo elimina de la lista
@@ -83,7 +126,36 @@ def getElementbyparameter(lista, parameter):
     else:
         return None
 
-# Funciones de consulta
+def contarMedios(obras):
+    """
+    Cuenta la cantidad de medios que se usan en una lista de obras
+    """
+    medios = listaMedios(obras)
+    num = lt.size(medios)
+    return num
+
+def costoTotal(obras):
+    """
+    Calcula el costo total de transportar unas obras.
+    """
+    ob = costoTransporte(obras)
+    t = 0
+    for o in lt.iterator(ob):
+        c = o['Transcost (USD)']
+        t += float(c)
+    return int(t)
+
+def pesoTotal(obras):
+    """
+    Calcula el peso total de las obras
+    """
+    w = 0
+    for obra in lt.iterator(obras):
+        peso = obra['Weight (kg)']
+        if peso is "":
+            peso = 0
+        w += float(peso)
+    return int(w)
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
@@ -208,14 +280,6 @@ def listaMedios(obras):
         if (i == 0):
             lt.addLast(medios,obra)
     return medios
-
-def contarMedios(obras):
-    """
-    Cuenta la cantidad de medios que se usan en una lista de obras
-    """
-    medios = listaMedios(obras)
-    num = lt.size(medios)
-    return num
     
 def artworksbyMedium(obras):
     """
@@ -261,70 +325,6 @@ def artworksbyDepartment(catalog,department):
         if (o['Department'] == department):
             lt.addLast(obras_d,o)
     return obras_d
-
-def costoTransporte(obras):
-    """
-    Calcular el costo de transporte de cada obra en obras y agregar el dato al elemento.
-    """
-    for obra in lt.iterator(obras):
-        # sacar los datos relevantes y estipular valores por defecto
-        peso = obra['Weight (kg)']
-        largo = obra['Length (cm)']
-        ancho = obra['Width (cm)']
-        profundidad = obra['Depth (cm)']
-        altura = obra['Height (cm)']
-        if peso is "":
-            peso = 0
-        if largo is "":
-            largo = 0
-        if ancho is "":
-            ancho = 0
-        if profundidad is "":
-            profundidad = 0
-        if altura is "":
-            altura = 0
-        # calcular el tamano (tres posibles formas)
-        t1 = (float(ancho)/100)*(float(altura)/100)
-        t2 = (float(ancho)/100)*(float(largo)/100)
-        t3 = (float(ancho)/100)*(float(altura)/100)*(float(profundidad)/100)
-        # crear lista para comparar los tamanos y sacar el mas grande
-        lista = lt.newList()
-        lt.addLast(lista,peso)
-        lt.addLast(lista,t3)
-        lt.addLast(lista,t2)
-        lt.addLast(lista,t1)
-        merge.sort(lista,cmpfunction=ordenAscendente)
-        tamano = lt.lastElement(lista)
-        # estipular el costo y agregarlo a los datos de la obra
-        if tamano == 0:
-            costo = 48
-        else:
-            costo = tamano*72
-        obra['Transcost (USD)'] = int(costo)
-    return obras
-        
-def costoTotal(obras):
-    """
-    Calcular el costo total de transportar unas obras.
-    """
-    ob = costoTransporte(obras)
-    t = 0
-    for o in lt.iterator(ob):
-        c = o['Transcost (USD)']
-        t += float(c)
-    return int(t)
-
-def pesoTotal(obras):
-    """
-    Calcula el peso total de las obras
-    """
-    w = 0
-    for obra in lt.iterator(obras):
-        peso = obra['Weight (kg)']
-        if peso is "":
-            peso = 0
-        w += float(peso)
-    return int(w)
 
 def masAntiguas(obras):
     """
