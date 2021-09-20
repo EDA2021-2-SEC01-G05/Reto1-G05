@@ -87,7 +87,7 @@ def getElementbyparameter(lista, parameter):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 
-def mayorQue(a,b):
+def ordenAscendente(a,b):
     if (a > b):
         return 0
     return -1
@@ -125,6 +125,21 @@ def compareAnio(anio, artist):
 
 def compareNames(nombre,artist):
     if nombre in artist["DisplayName"]:
+        return 0
+    return -1
+
+def compareDepartment(department, artwork):
+    if department in artwork['Department']:
+        return 0
+    return -1
+
+def compareDate(date,artwork):
+    if date in artwork['Date']:
+        return 0
+    return -1
+
+def compareCostos(costo,artwork):
+    if costo in artwork['Transcost (USD)']:
         return 0
     return -1
 
@@ -216,7 +231,7 @@ def artworksbyMedium(obras):
                 i += 1
         lt.addLast(numeros,i)
     # ordenamos la lista y sacamos el numero mas grande
-    merge.sort(numeros,cmpfunction=mayorQue)
+    merge.sort(numeros,cmpfunction=ordenAscendente)
     num = lt.lastElement(numeros)
     # hallamos el medio (medio) correspondiente a este numero mas grande (num)
     for medio in lt.iterator(medios):
@@ -233,7 +248,130 @@ def artworksbyMedium(obras):
             if (obra['Medium'] ==  medio['Medium']):
                 lt.addLast(lista,obra)
         return lista
+
+def artworksbyDepartment(catalog,department):
+    """
+    Retorna la lista de las obras en un departamento.
+    """
+    obras = lt.newList('SINGLE_LINKED',cmpfunction=compareDepartment)
+    obras_d = lt.newList()
+    for obra in lt.iterator(catalog['artworks']):
+        lt.addLast(obras,obra)
+    for o in lt.iterator(obras):
+        if (o['Department'] == department):
+            lt.addLast(obras_d,o)
+    return obras_d
+
+def costoTransporte(obras):
+    """
+    Calcular el costo de transporte de cada obra en obras y agregar el dato al elemento.
+    """
+    for obra in lt.iterator(obras):
+        # sacar los datos relevantes y estipular valores por defecto
+        peso = obra['Weight (kg)']
+        largo = obra['Length (cm)']
+        ancho = obra['Width (cm)']
+        profundidad = obra['Depth (cm)']
+        altura = obra['Height (cm)']
+        if peso is "":
+            peso = 0
+        if largo is "":
+            largo = 0
+        if ancho is "":
+            ancho = 0
+        if profundidad is "":
+            profundidad = 0
+        if altura is "":
+            altura = 0
+        # calcular el tamano (tres posibles formas)
+        t1 = (float(ancho)/100)*(float(altura)/100)
+        t2 = (float(ancho)/100)*(float(largo)/100)
+        t3 = (float(ancho)/100)*(float(altura)/100)*(float(profundidad)/100)
+        # crear lista para comparar los tamanos y sacar el mas grande
+        lista = lt.newList()
+        lt.addLast(lista,peso)
+        lt.addLast(lista,t3)
+        lt.addLast(lista,t2)
+        lt.addLast(lista,t1)
+        merge.sort(lista,cmpfunction=ordenAscendente)
+        tamano = lt.lastElement(lista)
+        # estipular el costo y agregarlo a los datos de la obra
+        if tamano == 0:
+            costo = 48
+        else:
+            costo = tamano*72
+        obra['Transcost (USD)'] = int(costo)
+    return obras
         
+def costoTotal(obras):
+    """
+    Calcular el costo total de transportar unas obras.
+    """
+    ob = costoTransporte(obras)
+    t = 0
+    for o in lt.iterator(ob):
+        c = o['Transcost (USD)']
+        t += float(c)
+    return int(t)
+
+def pesoTotal(obras):
+    """
+    Calcula el peso total de las obras
+    """
+    w = 0
+    for obra in lt.iterator(obras):
+        peso = obra['Weight (kg)']
+        if peso is "":
+            peso = 0
+        w += float(peso)
+    return int(w)
+
+def masAntiguas(obras):
+    """
+    Retorna una lista con las 5 obras mas antiguas de obras 
+    """
+    lista = lt.newList('SINGLE_LINKED',cmpfunction=compareDate)
+    fechas = lt.newList()
+    antiguas = lt.newList()
+    for obra in lt.iterator(obras):
+        lt.addLast(lista,obra)
+    for element in lt.iterator(lista):
+        f = element['Date']
+        if f is '':
+            None
+        else:
+            lt.addLast(fechas,f)
+    merge.sort(fechas,cmpfunction=ordenAscendente)
+    i = 0
+    while i < 5:
+        fecha = lt.removeFirst(fechas)
+        antigua = getElementbyparameterE(lista,fecha)
+        lt.addLast(antiguas,antigua)
+        i += 1
+    return antiguas
+
+def masCostosas(obras):
+    """
+    Retorna una lista con las 5 obras mas costosas de obras
+    """
+    datos = costoTransporte(obras)
+    obras_costos = lt.newList('SINGLE_LINKED',cmpfunction=compareCostos)
+    for dato in lt.iterator(datos):
+        lt.addLast(obras_costos,dato)
+    costos = lt.newList()
+    costosas = lt.newList()
+    for obra in lt.iterator(obras_costos):
+        lt.addLast(costos,(obra['Transcost (USD)']))
+    merge.sort(costos,cmpfunction=ordenAscendente)
+    i = 0
+    while i < 5:
+        costo = lt.removeLast(costos)
+        for obra in lt.iterator(obras_costos):
+            if costo == obra['Transcost (USD)']:
+                lt.addLast(costosas,obra)
+        i += 1
+    return costosas
+
 def firstThree(lista):
     """
     Retorna una lista con los tres primeros elementos de una lista.

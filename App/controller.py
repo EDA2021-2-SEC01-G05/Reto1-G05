@@ -94,6 +94,37 @@ def artworksbyMedium(obras):
     """
     return model.artworksbyMedium(obras)
 
+def artworksbyDepartment(catalog,department):
+    """
+    """
+    return model.artworksbyDepartment(catalog,department)
+
+def costoTransporte(obras):
+    """
+    """
+    return model.costoTransporte(obras)
+
+def costoTotal(obras):
+    """
+    """
+    return model.costoTotal(obras)
+
+def pesoTotal(obras):
+    """
+    """
+    return model.pesoTotal(obras)
+
+def masAntiguas(obras):
+    """
+    """
+    return model.masAntiguas(obras)
+
+
+def masCostosas(obras):
+    """
+    """
+    return model.masCostosas(obras)
+
 # Funciones de consulta sobre el catálogo
 
 def firstThree(catalog):

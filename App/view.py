@@ -41,6 +41,7 @@ def printMenu():
     print("3- Listar crónologicamente las adquisiciones")
     print("4- Clasificar las obras de los artistas por tecnica")
     print("5- Clasificar las obras por la nacionalidad de sus creadores")
+    print("6- Calcular costo de transportar las obras de un departamento")
 
 def initCatalog():
     """
@@ -57,26 +58,37 @@ def loadData(catalog):
 
 catalog = None
 
-def printArtistData(artists):
+def printArtistData_Req1(artists):
     size = lt.size(artists)
     if size>0:
         for artist in lt.iterator(artists):
-            print ("Nombre: " + artist["DisplayName"] + " Año nacimiento:  " 
-                    + artist["BeginDate"] + " Año fallecimiento: " + artist["EndDate"]
-                    + " Nacionalidad: " + artist["Nationality"] + " Género: " + artist["Gender"])
+            print ("Nombre: " + artist["DisplayName"] + ", Año nacimiento:  " 
+                    + artist["BeginDate"] + ", Año fallecimiento: " + artist["EndDate"]
+                    + ", Nacionalidad: " + artist["Nationality"] + ", Género: " + artist["Gender"])
     else:
         print ("No se encontraron artistas")
 
-def printArtworkData(artworks):
+def printArtworkData_Req3(artworks):
     size = lt.size(artworks)
     if size>0:
         for artwork in lt.iterator(artworks):
-            print ("ID: " + artwork["ObjectID"] + " Título: " + artwork["Title"] + " Fecha:  " 
-                    + artwork["Date"] + " Medio: " + artwork["Medium"]
-                    + " Dimensiones: " + artwork["Dimensions"] )
+            print ("ID: " + artwork["ObjectID"] + ", Título: " + artwork["Title"] 
+                    + ", Fecha:  " + artwork["Date"] + ", Medio: " 
+                    + artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"])
     else:
         print ("No se encontraron artistas")
 
+def printArtworkData_Req5(artworks):
+    size = lt.size(artworks)
+    if size>0:
+        for artwork in lt.iterator(artworks):
+            print ("ID: " + artwork["ObjectID"] + ", Título: " + artwork["Title"] 
+                    + ", ID artistas: " + artwork['ConstituentID'] + ", Clasificacion: " 
+                    + artwork['Classification'] + ", Fecha:  " + artwork["Date"] + ", Medio: " 
+                    + artwork["Medium"] + ", Dimensiones: " + artwork["Dimensions"] 
+                    + ", Costo de transporte (USD): " + str(artwork['Transcost (USD)']))
+    else:
+        print ("No se encontraron artistas")
 
 def requerimiento1(catalog, anio_inicial, anio_final):
     """
@@ -90,10 +102,10 @@ def requerimiento1(catalog, anio_inicial, anio_final):
     last = controller.lastThree(org_anio)
     first = controller.firstThree(org_anio)
     print ("  Estos son los 3 primeros Artistas encontrados: ")
-    printArtistData(first)
+    printArtistData_Req1(first)
     print("-" * 50)
     print ("  Estos son los 3 ultimos Artistas encontrados: ")
-    printArtistData(last)
+    printArtistData_Req1(last)
     print("-" * 50)
 
 def requerimiento3(catalog,nombre):
@@ -109,7 +121,27 @@ def requerimiento3(catalog,nombre):
     print("La técnica más usada por el artista es: " + str(medio_max))
     print("-" * 50)
     print("Listado de obras con la técnica más usada: ")
-    printArtworkData(lista)
+    printArtworkData_Req3(lista)
+
+def requerimiento5(catalog,department):
+    obras = controller.artworksbyDepartment(catalog,department)
+    total = controller.costoTotal(obras)
+    peso = controller.pesoTotal(obras)
+    antiguas = controller.masAntiguas(obras)
+    costosas = controller.masCostosas(obras)
+    print('Total de obras para transportar: ' + str(lt.size(obras)))
+    print("-" * 50)
+    print('Costo total estimado de transportar las obras (USD): ' + str(total))
+    print("-" * 50)
+    print('Peso total estimado de las obras (kg): ' + str(peso))
+    print("-" * 50)
+    print('Las 5 obras más antiguas a transportar son: ')
+    print("-" * 50)
+    printArtworkData_Req5(antiguas)
+    print("-" * 50)
+    print('Las 5 obras más costosas a transportar son: ')
+    print("-" * 50)
+    printArtworkData_Req5(costosas)
 
 """
 Menu principal
@@ -136,6 +168,10 @@ while True:
     elif int(inputs[0]) == 4:
         nombre = input("Ingrese el nombre del artista: ")
         requerimiento3(catalog,nombre)
+
+    elif int(inputs[0]) == 6:
+        department = input("Ingrese el nombre del departamento del museo: ")
+        requerimiento5(catalog,department)
 
     else:
         sys.exit(0)
