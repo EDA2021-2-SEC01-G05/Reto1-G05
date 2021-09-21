@@ -110,5 +110,6 @@ def lastThree(catalog):
 
 def getArtworkbyNationality(catalog, name):
     """
+    Ordena y consigue el top 10 de las nacionalidades con más obras.
     """
     return model.getArtworkbyNationality(catalog, name)

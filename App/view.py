@@ -108,6 +108,7 @@ def artworksBydate(catalog, startDate, finishDate, size, option):
 
 def topArtworksbyNationality(top):
     """
+    Esta se encarga de mostrar el top 10 de nacionalidades con más obras.
     """
     keys = list(top.keys())
     count = 0

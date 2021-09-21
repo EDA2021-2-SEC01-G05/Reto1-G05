@@ -202,7 +202,7 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
 
 def organizeTopNationaly(catalog):
     """
-    Organiza el Top de Nacionalidades con más obras.
+    Organiza el Top de Nacionalidades con más obras y tambien organiza alfabeticamente las obras de una nacionalidad.
     """
     ms.sort(catalog["nations"], cmpfunction=compareSizes)
     top = {}
