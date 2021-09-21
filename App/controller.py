@@ -25,6 +25,7 @@ import config as cf
 import model
 import csv
 from datetime import date
+from DISClib.ADT import list as lt
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
@@ -105,12 +106,82 @@ def firstThree(catalog):
 
 def lastThree(catalog):
     """
-    Devuelve los ultimos 3 elementos dela catalogo de artistas y obras.
+    Devuelve los primeros 3 elementos dela catalogo de artistas y obras.
     """
     return model.lastThree(catalog)
+
+def artistsbyAnio(catalog,anio_inicial,anio_final):
+    """
+    """
+    return model.organizeArtistsbyanio(catalog,anio_inicial,anio_final)
+
+def artworksbyArtist(catalog,nombre):
+    """
+    """
+    return model.artworksbyArtist(catalog,nombre)
+
+def medioMax(obras):
+    """
+    """
+    medio = lt.firstElement(obras)
+    return medio['Medium']
+
+def contarMedios(obras):
+    """
+    """
+    return model.contarMedios(obras)
+
+def artworksbyMedium(obras):
+    """
+    """
+    return model.artworksbyMedium(obras)
+
+def artworksbyDepartment(catalog,department):
+    """
+    """
+    return model.artworksbyDepartment(catalog,department)
+
+def costoTransporte(obras):
+    """
+    """
+    return model.costoTransporte(obras)
+
+def costoTotal(obras):
+    """
+    """
+    return model.costoTotal(obras)
+
+def pesoTotal(obras):
+    """
+    """
+    return model.pesoTotal(obras)
+
+def masAntiguas(obras):
+    """
+    """
+    return model.masAntiguas(obras)
+
+
+def masCostosas(obras):
+    """
+    """
+    return model.masCostosas(obras)
+
+# Funciones de consulta sobre el catálogo
+
+def firstThreeD(catalog):
+    """
+    """
+    return model.firstThreeD(catalog)
+
+def lastThreeD(catalog):
+    """
+    """
+    return model.lastThreeD(catalog)
 
 def getArtworkbyNationality(catalog, name):
     """
     Ordena y consigue el top 10 de las nacionalidades con más obras.
     """
     return model.getArtworkbyNationality(catalog, name)
+    
