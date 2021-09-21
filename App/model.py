@@ -136,20 +136,18 @@ def ArtworkNationality(catalog, codes):
     artists = getArtistbyCode(catalog, codes)
     nations = lt.newList()
     for artist in lt.iterator(artists):
-        if artist["Nationality"] != "":
-            lt.addLast(nations, artist["Nationality"])
+        if artist["Nationality"] == "":
+            artist["Nationality"] = "Nationality unknown"
+        lt.addLast(nations, artist["Nationality"])
     return nations
 
-def getArtworkbydate(artworks, date):
+def getArtworkbydate(artworks, date, org):
     """
     Retorna una obra por su fecha de adquisición.
     """
-    
-    pos = lt.isPresent(artworks, date)
-    if pos > 0:
-        artwork = lt.getElement(artworks, pos)
-        return artwork
-    return None
+    for artwork in lt.iterator(artworks):
+        if date == artwork["DateAcquired"]:
+            lt.addLast(org, artwork)
 
 def countPurchase(artworks):
     """
@@ -182,7 +180,7 @@ def compareDates(date_1, artwork):
     return -1
 
 def compareCID(cID, artist):
-    if cID in artist["ConstituentID"]:
+    if cID == artist["ConstituentID"]:
         return 0
     return -1
 
@@ -191,8 +189,11 @@ def compareNation(nation, countries):
         return 0
     return -1
 
+def compareAlphabet(artwork1, artwork2):
+    return(artwork1["Title"] < artwork2["Title"])
+
 def compareSizes(nacionality1, nacionality2):
-    return ((lt.size(nacionality1["artworks"])) > (lt.size(nacionality2["artworks"])))
+    return (lt.size(nacionality1["artworks"]) > lt.size(nacionality2["artworks"]))
 
 def cmpArtworkByDateAcquired(artwork1, artwork2):
     return (date.fromisoformat(artwork1["DateAcquired"]) < date.fromisoformat(artwork2["DateAcquired"]))
@@ -203,10 +204,11 @@ def organizeTopNationaly(catalog):
     """
     Organiza el Top de Nacionalidades con más obras.
     """
-    sa.sort(catalog["nations"], cmpfunction=compareSizes)
+    ms.sort(catalog["nations"], cmpfunction=compareSizes)
     top = {}
     for nation in lt.iterator(catalog["nations"]):
         top[nation["name"]] = lt.size(nation["artworks"])
+        ms.sort(nation["artworks"], cmpfunction=compareAlphabet)
     return top
 
 def sortArtworksbyDate(catalog, size, option):
@@ -238,10 +240,7 @@ def organizeArtworkbyDate(catalog, startDate, finishDate, size, option):
     for day in range(delta.days + 1):
         new_day = d_0 + timedelta(days=day)
         new_date = new_day.strftime("%Y-%m-%d")
-        art = getArtworkbydate(artworks, new_date)
-        if art is not None:
-            lt.addLast(org, art)
-    
+        getArtworkbydate(artworks, new_date, org)
     return elapsed_time_mseg, org
 
 def firstThree(catalog):
