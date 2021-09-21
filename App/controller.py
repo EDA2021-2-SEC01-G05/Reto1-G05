@@ -127,12 +127,12 @@ def masCostosas(obras):
 
 # Funciones de consulta sobre el catálogo
 
-def firstThree(catalog):
+def firstThreeD(catalog):
     """
     """
-    return model.firstThree(catalog)
+    return model.firstThreeD(catalog)
 
-def lastThree(catalog):
+def lastThreeD(catalog):
     """
     """
-    return model.lastThree(catalog)
+    return model.lastThreeD(catalog)

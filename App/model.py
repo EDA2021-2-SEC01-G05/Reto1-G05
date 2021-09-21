@@ -27,7 +27,7 @@
 import config as cf
 from DISClib.ADT import list as lt
 assert cf
-from DISClib.Algorithms.Sorting import mergesort as merge
+from DISClib.Algorithms.Sorting import mergesort as ms
 
 """
 Se define la estructura de un catálogo de obras en el museo. 
@@ -91,7 +91,7 @@ def costoTransporte(obras):
         lt.addLast(lista,t3)
         lt.addLast(lista,t2)
         lt.addLast(lista,t1)
-        merge.sort(lista,cmpfunction=ordenAscendente)
+        ms.sort(lista,cmpfunction=ordenAscendente)
         tamano = lt.lastElement(lista)
         # estipular el costo y agregarlo a los datos de la obra
         if tamano == 0:
@@ -295,7 +295,7 @@ def artworksbyMedium(obras):
                 i += 1
         lt.addLast(numeros,i)
     # ordenamos la lista y sacamos el numero mas grande
-    merge.sort(numeros,cmpfunction=ordenAscendente)
+    ms.sort(numeros,cmpfunction=ordenAscendente)
     num = lt.lastElement(numeros)
     # hallamos el medio (medio) correspondiente a este numero mas grande (num)
     for medio in lt.iterator(medios):
@@ -341,7 +341,7 @@ def masAntiguas(obras):
             None
         else:
             lt.addLast(fechas,f)
-    merge.sort(fechas,cmpfunction=ordenAscendente)
+    ms.sort(fechas,cmpfunction=ordenAscendente)
     i = 0
     while i < 5:
         fecha = lt.removeFirst(fechas)
@@ -362,7 +362,7 @@ def masCostosas(obras):
     costosas = lt.newList()
     for obra in lt.iterator(obras_costos):
         lt.addLast(costos,(obra['Transcost (USD)']))
-    merge.sort(costos,cmpfunction=ordenAscendente)
+    ms.sort(costos,cmpfunction=ordenAscendente)
     i = 0
     while i < 5:
         costo = lt.removeLast(costos)
@@ -372,14 +372,14 @@ def masCostosas(obras):
         i += 1
     return costosas
 
-def firstThree(lista):
+def firstThreeD(lista):
     """
     Retorna una lista con los tres primeros elementos de una lista.
     """
     first = lt.subList(lista,1,3)
     return first
     
-def lastThree(lista):
+def lastThreeD(lista):
     """
     Retorna una lista con los 3 ultimos elementos de una lista.
     """

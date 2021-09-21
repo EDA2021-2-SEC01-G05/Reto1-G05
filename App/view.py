@@ -100,8 +100,8 @@ def requerimiento1(catalog, anio_inicial, anio_final):
     print("\n")
     print("Total de artistas en el rango " + str(anio_inicial) + " - " + str(anio_final) + ": " + str(lt.size(org_anio)))
     print("-" * 50)
-    last = controller.lastThree(org_anio)
-    first = controller.firstThree(org_anio)
+    last = controller.lastThreeD(org_anio)
+    first = controller.firstThreeD(org_anio)
     print ("  Estos son los 3 primeros Artistas encontrados: ")
     printArtistData_Req1(first)
     print("-" * 50)
@@ -157,9 +157,9 @@ while True:
         print('Obras cargados: ' + str(lt.size(catalog['artworks'])))
         print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
         print("Ultimos 3 elementos de Artistas: ")
-        print(controller.firstThree(catalog["artists"]))
+        print(controller.firstThreeD(catalog["artists"]))
         print("Ultimos 3 elementos de Obras: ")
-        print(controller.lastThree(catalog["artworks"]))
+        print(controller.lastThreeD(catalog["artworks"]))
 
     elif int(inputs[0]) == 2:
         anio_inicial = input("Ingrese el año inicial: ")
