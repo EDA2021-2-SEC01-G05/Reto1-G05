@@ -50,11 +50,11 @@ def printOptionSort():
     print("3. Merge Sort")
     print("4. Quick Sort")
 
-def initCatalog(type):
+def initCatalog():
     """
     Inicializa el catalogo de libros
     """
-    return controller.initCatalog(type)
+    return controller.initCatalog()
 
 
 def loadData(catalog):
