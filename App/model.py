@@ -376,7 +376,7 @@ def compareOID(OID, artwork):
         return 0
     return -1
 
-def compareCID(CID, artwork):
+def comparecID(CID, artwork):
     x = str(CID)
     string1 = '[' + x + ']'
     string2 = ',' + x + ','
@@ -452,7 +452,7 @@ def artworksbyArtist(catalog,nombre):
     artista = getElementbyparameter(artistas,nombre)
     ident = artista["ConstituentID"]
     # crear nueva lista de obras a partir de catalog['artworks'] para comparar por ID 
-    obras1 = lt.newList("SINGLE_LINKED",cmpfunction=compareCID)
+    obras1 = lt.newList("SINGLE_LINKED",cmpfunction=comparecID)
     artworks = catalog["artworks"]
     for artwork in lt.iterator(artworks):
         lt.addLast(obras1,artwork)

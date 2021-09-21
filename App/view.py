@@ -223,7 +223,6 @@ while True:
         print(("-" * 22) + "Ultimos 3 elementos de Obras " + ("-" * 22))
         printArtworkData(catalog, controller.lastThree(catalog["artworks"]))
         print("-" * 73)
-        print(catalog["nations"])
 
     elif int(inputs[0]) == 3:
         size = input("Indique tamaño de la muestra: ")
