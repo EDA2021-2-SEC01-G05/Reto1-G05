@@ -51,7 +51,8 @@ def newCatalog(type):
     Retorna el catalogo inicializado.
     """
     catalog = {"artworks": None,
-                "artists": None}
+                "artists": None,
+                "nations": None}
 
     catalog["artworks"] = lt.newList(type, 
                                     cmpfunction=compareDates)
