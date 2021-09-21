@@ -31,13 +31,11 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 # Inicialización del Catálogo de libros
-def initCatalog(type):
+def initCatalog():
     """
     Llama la funcion de inicializacion del catalogo del modelo.
     """
     t = "SINGLE_LINKED"
-    if type == 2:
-        t = "ARRAY_LIST"
     catalog = model.newCatalog(t)
     return catalog
 
@@ -74,6 +72,7 @@ def loadArtists(catalog):
 
 def organizeTopNationaliy(catalog):
     """
+    Llama a la función que devuelve el top cantidad de obras de la lista de nacionalidades.
     """
     return model.organizeTopNationaly(catalog)
 
@@ -88,11 +87,13 @@ def organizeBooksbyDate(catalog, startDate, finishDate, size, option):
 
 def getArtistsofArtwork(catalog, codes):
     """
+    Llama a la funcion que identifica al artista o artistas de un aobra.
     """
     return model.getArtistname(catalog,codes)
 
 def countPurchase(artworks):
     """
+    Llama a la función que cuenta cuantas obras fueron compradas en una lista dada.
     """
     return model.countPurchase(artworks)
 

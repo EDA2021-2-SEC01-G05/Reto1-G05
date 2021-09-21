@@ -125,8 +125,7 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-        type = input("Selecciones 1 o 2 si quiere que la lista de datos se LINKED_LIST o ARRAY_LIST respectivamente\n")
-        catalog = initCatalog(type)
+        catalog = initCatalog()
         loadData(catalog)
         print("-" * 74)
         print('Obras cargadas: ' + str(lt.size(catalog['artworks']))+ "\n")
