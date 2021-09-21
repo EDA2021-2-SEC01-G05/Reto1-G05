@@ -25,6 +25,7 @@ import sys
 import controller 
 from DISClib.ADT import list as lt
 assert cf
+import time
 
 
 """
@@ -210,6 +211,7 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        start_time = time.process_time()
         print("Cargando información de los archivos ....")
         catalog = initCatalog()
         loadData(catalog)
@@ -223,6 +225,9 @@ while True:
         print(("-" * 22) + "Ultimos 3 elementos de Obras " + ("-" * 22))
         printArtworkData(catalog, controller.lastThree(catalog["artworks"]))
         print("-" * 73)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
 
     elif int(inputs[0]) == 3:
         size = input("Indique tamaño de la muestra: ")
@@ -233,6 +238,7 @@ while True:
         artworksBydate(catalog, startDate, finishDate, size, option) 
     
     elif int(inputs[0]) == 5:
+        start_time = time.process_time()
         top = (controller.organizeTopNationaliy(catalog))
         topArtworksbyNationality(top)
         first = str(list(top.keys())[0])
@@ -243,19 +249,34 @@ while True:
         print("-" * 84)
         print(("-" * 22) + "Estos son las 3 ultimas Obras encontradas" + ("-" * 21) + "\n")
         printArtworkData(catalog, controller.lastThree(artworks))
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
 
     elif int(inputs[0]) == 2:
         anio_inicial = input("Ingrese el año inicial: ")
         anio_final = input("Ingrese el año final: ")
+        start_time = time.process_time()
         requerimiento1(catalog, anio_inicial, anio_final)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
 
     elif int(inputs[0]) == 4:
         nombre = input("Ingrese el nombre del artista: ")
+        start_time = time.process_time()
         requerimiento3(catalog,nombre)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
 
     elif int(inputs[0]) == 6:
         department = input("Ingrese el nombre del departamento del museo: ")
+        start_time = time.process_time()
         requerimiento5(catalog,department)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
 
     else:
         sys.exit(0)
