@@ -235,7 +235,11 @@ while True:
         option = input('Seleccione una opción para continuar\n')
         startDate = input("Fecha de Inicio (YYYY-MM-DD): ")
         finishDate = input("Fecha Final (YYYY-MM-DD): ")
-        artworksBydate(catalog, startDate, finishDate, size, option) 
+        start_time = time.process_time()
+        artworksBydate(catalog, startDate, finishDate, size, option)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg)) 
     
     elif int(inputs[0]) == 5:
         start_time = time.process_time()
