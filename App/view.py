@@ -25,6 +25,7 @@ import sys
 import controller 
 from DISClib.ADT import list as lt
 assert cf
+import time
 
 
 """
@@ -50,12 +51,13 @@ def printOptionSort():
     print("2. Shell Sort")
     print("3. Merge Sort")
     print("4. Quick Sort")
+    
 
-def initCatalog(type):
+def initCatalog():
     """
     Inicializa el catalogo de libros
     """
-    return controller.initCatalog(type)
+    return controller.initCatalog()
 
 
 def loadData(catalog):
@@ -72,7 +74,7 @@ def printArtworkData(catalog, artworks):
         for artwork in lt.iterator(artworks):
             artists = controller.getArtistsofArtwork(catalog, artwork["ConstituentID"])
             print ("Título: " + artwork["Title"] + " Artista(s): " + artists + "Fecha de Adquisición:  " 
-                    + artwork["DateAcquired"] + " Medio: " + artwork["Medium"] + " Dimensiones: " + artwork["Dimensions"])
+                    + artwork["DateAcquired"] + " Medio: " + artwork["Medium"] + " Dimensiones: " + artwork["Dimensions"] + "\n")
     else:
         print ("No se encontraron obras")
 
@@ -81,7 +83,7 @@ def printArtistData(artists):
     if size:
         for artist in lt.iterator(artists):
             print ("Nombre: " + artist["DisplayName"] + " Contituent ID:  " 
-                    + artist["ConstituentID"])
+                    + artist["ConstituentID"] + " \n")
     else:
         print ("No se encontraron artistas")
 
@@ -95,31 +97,28 @@ def artworksBydate(catalog, startDate, finishDate, size, option):
     last = controller.lastThree(org_dates[1])
     first = controller.firstThree(org_dates[1])
     print("\n")
-    print("Total de obras en el rango " + str(startDate) + " - " + str(finishDate) + ": " + str(lt.size(org_dates[1]))) 
-    print("-" * 50)
-    print("Total de obras compradas en el rango: " + str(controller.countPurchase(org_dates[1])))
-    print("-" * 50)
-    print ("  Estos son las 3 primeras Obras encontrados: ")
+    print("Total de obras en el rango " + str(startDate) + " - " + str(finishDate) + ": " + str(lt.size(org_dates[1]))+ "\n") 
+    print("-" * 84 + "\n")
+    print("Total de obras compradas en el rango: " + str(controller.countPurchase(org_dates[1])) + "\n")
+    print("-" * 84)
+    print(("-" * 21) + "Estos son las 3 primeras Obras encontradas" + ("-" * 21) + "\n")
     printArtworkData(catalog, first)
-    print("-" * 50)
-    print ("  Estos son las 3 ultimas Obras encontrados: ")
+    print("-" * 84)
+    print(("-" * 22) + "Estos son las 3 ultimas Obras encontradas" + ("-" * 21) + "\n")
     printArtworkData(catalog, last)
-    print("-" * 50)
+    print("-" * 84)
     print("Para la muestra de elementos " + size + " el tiempo (mseg) es: ", str(org_dates[0]))
 
 def topArtworksbyNationality(top):
     """
+    Esta se encarga de mostrar el top 10 de nacionalidades con más obras.
     """
     keys = list(top.keys())
-    top_nations = ""
     count = 0
+    print(("-" * 15) + "Top Nacionalidades con más obras obras" + ("-" * 15) + "\n")
     for x in range(0,10):
         count += 1
-        top_nations += str(count) + ". " + str(keys[x]) + ": " + str(top[str(keys[x])]) + " "
-    print("Top Nacionalidades con más obras obras: ")
-    print (top_nations[:-1])
-    print("-" * 50)
-
+        print(str(count) + ". " + str(keys[x]) + ": " + str(top[str(keys[x])])+ "\n")
 def printArtistData_Req1(artists):
     size = lt.size(artists)
     if size>0:
@@ -161,8 +160,8 @@ def requerimiento1(catalog, anio_inicial, anio_final):
     print("\n")
     print("Total de artistas en el rango " + str(anio_inicial) + " - " + str(anio_final) + ": " + str(lt.size(org_anio)))
     print("-" * 50)
-    last = controller.lastThreeD(org_anio)
-    first = controller.firstThreeD(org_anio)
+    last = controller.lastThree(org_anio)
+    first = controller.firstThree(org_anio)
     print ("  Estos son los 3 primeros Artistas encontrados: ")
     printArtistData_Req1(first)
     print("-" * 50)
@@ -212,49 +211,76 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
+        start_time = time.process_time()
         print("Cargando información de los archivos ....")
-        type = input("Selecciones 1 o 2 si quiere que la lista de datos se LINKED_LIST o ARRAY_LIST respectivamente\n")
-        catalog = initCatalog(type)
+        catalog = initCatalog()
         loadData(catalog)
-        print('Obras cargados: ' + str(lt.size(catalog['artworks'])))
-        print('Artistas cargados: ' + str(lt.size(catalog['artists'])))
-        print("Ultimos 3 elementos de Artistas: ")
+        print("-" * 74)
+        print('Obras cargadas: ' + str(lt.size(catalog['artworks']))+ "\n")
+        print('Artistas cargados: ' + str(lt.size(catalog['artists'])) + "\n")
+        print("-" * 74)
+        print(("-" * 21) + "Ultimos 3 elementos de Artistas " + ("-" * 21))
         printArtistData(controller.lastThree(catalog["artists"]))
-        print("Ultimos 3 elementos de Obras: ")
+        print("-" * 73)
+        print(("-" * 22) + "Ultimos 3 elementos de Obras " + ("-" * 22))
         printArtworkData(catalog, controller.lastThree(catalog["artworks"]))
+        print("-" * 73)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
 
-    elif int(inputs[0]) == 2:
-        anio_inicial = input("Ingrese el año inicial: ")
-        anio_final = input("Ingrese el año final: ")
-        requerimiento1(catalog, anio_inicial, anio_final)
-        
     elif int(inputs[0]) == 3:
         size = input("Indique tamaño de la muestra: ")
         printOptionSort()
         option = input('Seleccione una opción para continuar\n')
         startDate = input("Fecha de Inicio (YYYY-MM-DD): ")
         finishDate = input("Fecha Final (YYYY-MM-DD): ")
+        start_time = time.process_time()
         artworksBydate(catalog, startDate, finishDate, size, option)
-
-    elif int(inputs[0]) == 4:
-        nombre = input("Ingrese el nombre del artista: ")
-        requerimiento3(catalog,nombre)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg)) 
     
     elif int(inputs[0]) == 5:
+        start_time = time.process_time()
         top = (controller.organizeTopNationaliy(catalog))
         topArtworksbyNationality(top)
         first = str(list(top.keys())[0])
         artworks = controller.getArtworkbyNationality(catalog, first)
+        print("-" * 84)
+        print(("-" * 21) + "Estos son las 3 primeras Obras encontradas" + ("-" * 21) + "\n")
         printArtworkData(catalog, controller.firstThree(artworks))
-        print("-"*50)
+        print("-" * 84)
+        print(("-" * 22) + "Estos son las 3 ultimas Obras encontradas" + ("-" * 21) + "\n")
         printArtworkData(catalog, controller.lastThree(artworks))
-        print(controller.firstThree(catalog["artists"]))
-        print("Ultimos 3 elementos de Obras: ")
-        print(controller.lastThree(catalog["artworks"]))
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
+
+    elif int(inputs[0]) == 2:
+        anio_inicial = input("Ingrese el año inicial: ")
+        anio_final = input("Ingrese el año final: ")
+        start_time = time.process_time()
+        requerimiento1(catalog, anio_inicial, anio_final)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
+
+    elif int(inputs[0]) == 4:
+        nombre = input("Ingrese el nombre del artista: ")
+        start_time = time.process_time()
+        requerimiento3(catalog,nombre)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
 
     elif int(inputs[0]) == 6:
         department = input("Ingrese el nombre del departamento del museo: ")
+        start_time = time.process_time()
         requerimiento5(catalog,department)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print("Tiempo de ejecución: " + str(elapsed_time_mseg))
 
     else:
         sys.exit(0)
