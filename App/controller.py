@@ -32,13 +32,11 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 # Inicialización del Catálogo de libros
-def initCatalog(type):
+def initCatalog():
     """
     Llama la funcion de inicializacion del catalogo del modelo.
     """
     t = "SINGLE_LINKED"
-    if type == 2:
-        t = "ARRAY_LIST"
     catalog = model.newCatalog(t)
     return catalog
 
@@ -57,7 +55,7 @@ def loadArtworks(catalog):
     """
     Carga las obras del archivo.
     """
-    booksfile = cf.data_dir + 'MoMA/Artworks-utf8-small.csv'
+    booksfile = cf.data_dir + 'MoMA/Artworks-utf8-10pct.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for artwork in input_file:
         model.addArtwork(catalog, artwork)   
@@ -66,7 +64,7 @@ def loadArtists(catalog):
     """
     Carga los artistas.
     """
-    booksfile = cf.data_dir + 'MoMA/Artists-utf8-small.csv'
+    booksfile = cf.data_dir + 'MoMA/Artists-utf8-10pct.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for artist in input_file:
         model.addArtist(catalog, artist)
@@ -75,6 +73,7 @@ def loadArtists(catalog):
 
 def organizeTopNationaliy(catalog):
     """
+    Llama a la función que devuelve el top cantidad de obras de la lista de nacionalidades.
     """
     return model.organizeTopNationaly(catalog)
 
@@ -87,20 +86,29 @@ def organizeBooksbyDate(catalog, startDate, finishDate, size, option):
 
 # Funciones de consulta sobre el catálogo
 
-def getArtworkbyNationality(catalog, name):
-    """
-    """
-    return model.getArtworkbyNationality(catalog, name)
-
 def getArtistsofArtwork(catalog, codes):
     """
+    Llama a la funcion que identifica al artista o artistas de un aobra.
     """
     return model.getArtistname(catalog,codes)
 
 def countPurchase(artworks):
     """
+    Llama a la función que cuenta cuantas obras fueron compradas en una lista dada.
     """
     return model.countPurchase(artworks)
+
+def firstThree(catalog):
+    """
+    Devuelve los primeros 3 elementos dela catalogo de artistas y obras.
+    """
+    return model.firstThree(catalog)
+
+def lastThree(catalog):
+    """
+    Devuelve los primeros 3 elementos dela catalogo de artistas y obras.
+    """
+    return model.lastThree(catalog)
 
 def artistsbyAnio(catalog,anio_inicial,anio_final):
     """
@@ -171,14 +179,8 @@ def lastThreeD(catalog):
     """
     return model.lastThreeD(catalog)
 
-def firstThree(catalog):
+def getArtworkbyNationality(catalog, name):
     """
-    Devuelve los primeros 3 elementos dela catalogo de artistas y obras.
+    Ordena y consigue el top 10 de las nacionalidades con más obras.
     """
-    return model.firstThree(catalog)
-
-def lastThree(catalog):
-    """
-    Devuelve los ultimos 3 elementos dela catalogo de artistas y obras.
-    """
-    return model.lastThree(catalog)   
+    return model.getArtworkbyNationality(catalog, name)
