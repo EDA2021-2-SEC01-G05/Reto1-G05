@@ -1,4 +1,4 @@
-"""
+﻿"""
  * Copyright 2020, Departamento de sistemas y Computación,
  * Universidad de Los Andes
  *
@@ -581,6 +581,3 @@ def lastThreeD(lista):
     last = lt.subList(lista,lt.size(lista)-2,3)
     return last
  
-
-
-
