@@ -91,7 +91,7 @@ def artworksBydate(catalog, startDate, finishDate, size, option):
     """
     Genera una lista cronológicamente ordenada de las obras adquiridas 
     por el museo en un rango de fecha. Retorna el total de obras en el rango cronológico, 
-    total de obras adquiridas por compra y las primeras 3 y utimas 3 obras del rango.
+    total de obras adquiridas por compra y las primeras 3 y utimas 3 obras del rango. ()()()
     """
     org_dates = controller.organizeArtworksbyDate(catalog, startDate, finishDate, size, option)
     last = controller.lastThree(org_dates[1])
