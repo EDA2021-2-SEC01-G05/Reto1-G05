@@ -25,19 +25,18 @@ import config as cf
 import model
 import csv
 from datetime import date
+from DISClib.ADT import list as lt
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 # Inicialización del Catálogo de libros
-def initCatalog(type):
+def initCatalog():
     """
     Llama la funcion de inicializacion del catalogo del modelo.
     """
     t = "SINGLE_LINKED"
-    if type == 2:
-        t = "ARRAY_LIST"
     catalog = model.newCatalog(t)
     return catalog
 
@@ -74,10 +73,11 @@ def loadArtists(catalog):
 
 def organizeTopNationaliy(catalog):
     """
+    Llama a la función que devuelve el top cantidad de obras de la lista de nacionalidades.
     """
     return model.organizeTopNationaly(catalog)
 
-def organizeBooksbyDate(catalog, startDate, finishDate, size, option):
+def organizeArtworksbyDate(catalog, startDate, finishDate, size, option):
     """
     Organiza las obras por fecha.
     """
@@ -88,11 +88,13 @@ def organizeBooksbyDate(catalog, startDate, finishDate, size, option):
 
 def getArtistsofArtwork(catalog, codes):
     """
+    Llama a la funcion que identifica al artista o artistas de un aobra.
     """
     return model.getArtistname(catalog,codes)
 
 def countPurchase(artworks):
     """
+    Llama a la función que cuenta cuantas obras fueron compradas en una lista dada.
     """
     return model.countPurchase(artworks)
 
@@ -104,11 +106,81 @@ def firstThree(catalog):
 
 def lastThree(catalog):
     """
-    Devuelve los ultimos 3 elementos dela catalogo de artistas y obras.
+    Devuelve los primeros 3 elementos dela catalogo de artistas y obras.
     """
     return model.lastThree(catalog)
 
+def artistsbyAnio(catalog,anio_inicial,anio_final):
+    """
+    """
+    return model.organizeArtistsbyanio(catalog,anio_inicial,anio_final)
+
+def artworksbyArtist(catalog,nombre):
+    """
+    """
+    return model.artworksbyArtist(catalog,nombre)
+
+def medioMax(obras):
+    """
+    """
+    medio = lt.firstElement(obras)
+    return medio['Medium']
+
+def contarMedios(obras):
+    """
+    """
+    return model.contarMedios(obras)
+
+def artworksbyMedium(obras):
+    """
+    """
+    return model.artworksbyMedium(obras)
+
+def artworksbyDepartment(catalog,department):
+    """
+    """
+    return model.artworksbyDepartment(catalog,department)
+
+def costoTransporte(obras):
+    """
+    """
+    return model.costoTransporte(obras)
+
+def costoTotal(obras):
+    """
+    """
+    return model.costoTotal(obras)
+
+def pesoTotal(obras):
+    """
+    """
+    return model.pesoTotal(obras)
+
+def masAntiguas(obras):
+    """
+    """
+    return model.masAntiguas(obras)
+
+
+def masCostosas(obras):
+    """
+    """
+    return model.masCostosas(obras)
+
+# Funciones de consulta sobre el catálogo
+
+def firstThreeD(catalog):
+    """
+    """
+    return model.firstThreeD(catalog)
+
+def lastThreeD(catalog):
+    """
+    """
+    return model.lastThreeD(catalog)
+
 def getArtworkbyNationality(catalog, name):
     """
+    Ordena y consigue el top 10 de las nacionalidades con más obras.
     """
     return model.getArtworkbyNationality(catalog, name)
